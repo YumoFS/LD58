@@ -34,6 +34,13 @@ public class Move_Controller : MonoBehaviour
     public bool canMoveRight = false;
     public bool canRun = false;
     public bool canJump = true; // 可以控制是否允许跳跃
+    public bool canTeleport = false;
+
+    [Header("Teleport Settings")]
+    public float teleportDistance = 10f;
+    public float teleportCooldown = 1f;
+    public LayerMask teleportLayerMask = 1; // 可传送到的层级
+    public GameObject teleportEffect; // 传送特效（可选）
 
     Vector2 currentMoveInput;
     Vector3 currentMove;
@@ -41,12 +48,16 @@ public class Move_Controller : MonoBehaviour
     bool MovePressed;
     bool RunPressed;
     bool JumpPressed;
+    bool TeleportPressed;
     private Vector3 velocity;
 
     // 跳跃相关变量
     private float jumpTimeoutDelta;
     private float fallTimeoutDelta;
     private bool isJumping = false;
+
+    private float lastTeleportTime;
+    private bool isTeleporting = false;
 
     // Animator 参数哈希
     int VelocityHash;
@@ -78,6 +89,14 @@ public class Move_Controller : MonoBehaviour
         if (canJump) // 只有允许跳跃时才响应
         {
             JumpPressed = context.ReadValue<float>() > 0.5f;
+        }
+    }
+
+    void onTeleportInput(InputAction.CallbackContext context)
+    {
+        if (canTeleport) // 只有允许传送时才响应
+        {
+            TeleportPressed = context.ReadValue<float>() > 0.5f;
         }
     }
 
@@ -126,6 +145,10 @@ public class Move_Controller : MonoBehaviour
                 canJump = true;
                 // Debug.Log("解锁跳跃能力!");
                 break;
+            case "teleport":
+                canTeleport = true;
+                // Debug.Log("解锁奔跑能力!");
+                break;
             default:
                 Debug.LogWarning("未知的移动方向: " + direction);
                 break;
@@ -153,6 +176,9 @@ public class Move_Controller : MonoBehaviour
                 break;
             case "jump":
                 canJump = !canJump;
+                break;
+            case "teleport":
+                canTeleport = !canTeleport;
                 break;
             default:
                 Debug.LogWarning("未知的移动方向: " + direction);
@@ -192,70 +218,121 @@ public class Move_Controller : MonoBehaviour
             move = (camRight * currentMove.x + camForward * currentMove.z) * speed;
         }
 
-        // 地面检测和跳跃处理
-        HandleGravityAndJump(ref move);
-
         characterController.Move(move * Time.deltaTime);
     }
-
-    void HandleGravityAndJump(ref Vector3 move)
+    
+    // 传送功能
+    void HandleTeleport()
     {
-        bool isGrounded = characterController.isGrounded;
-
-        // 更新动画状态
-        animator.SetBool(GroundedHash, isGrounded);
-
-        // 落地处理
-        if (isGrounded)
+        if (!canTeleport || isTeleporting) return;
+        
+        // 检查冷却时间
+        if (Time.time - lastTeleportTime < teleportCooldown) return;
+        
+        if (TeleportPressed)
         {
-            fallTimeoutDelta = fallTimeout;
-
-            animator.SetBool(JumpHash, false);
-
-            // 停止y轴速度，但保持一个小的向下力让角色紧贴地面
-            if (velocity.y < 0.0f)
-            {
-                velocity.y = -2f;
-                isJumping = false;
-            }
-
-            // 跳跃
-            if (JumpPressed && jumpTimeoutDelta <= 0.0f && canJump)
-            {
-                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-
-                animator.SetBool(JumpHash, true);
-                isJumping = true;
-            }
-
-            // 跳跃超时
-            if (jumpTimeoutDelta >= 0.0f)
-            {
-                jumpTimeoutDelta -= Time.deltaTime;
-            }
+            StartCoroutine(PerformTeleport());
+        }
+    }
+    
+    IEnumerator PerformTeleport()
+    {
+        isTeleporting = true;
+        
+        Vector3 teleportDirection = transform.forward;
+        teleportDirection.y = 0; 
+        teleportDirection.Normalize();
+        
+        if (Mathf.Abs(teleportDirection.x) > Mathf.Abs(teleportDirection.z))
+        {
+            teleportDirection = new Vector3(Mathf.Sign(teleportDirection.x), 0, 0);
         }
         else
         {
-            jumpTimeoutDelta = jumpTimeout;
-
-            if (fallTimeoutDelta >= 0.0f)
+            teleportDirection = new Vector3(0, 0, Mathf.Sign(teleportDirection.z));
+        }
+        
+        Vector3 rayStart = transform.position - Vector3.up * 0.5f;
+        
+        // 使用RaycastAll获取所有命中物体
+        RaycastHit[] hits = Physics.RaycastAll(rayStart, teleportDirection, teleportDistance, teleportLayerMask);
+        
+        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+        
+        // 找到第一个不是AirWall的物体
+        RaycastHit? validHit = null;
+        foreach (RaycastHit h in hits)
+        {
+            if (!h.collider.CompareTag("AirWall"))
             {
-                fallTimeoutDelta -= Time.deltaTime;
+                validHit = h;
+                break;
             }
+        }
+        
+        if (validHit.HasValue)
+        {
+            RaycastHit hit = validHit.Value;
+            
+            Vector3 targetPosition = hit.point;
+            
+            targetPosition.y = hit.collider.bounds.max.y;
+            targetPosition += teleportDirection;
+            
+            // 可选：播放传送特效
+            // if (teleportEffect != null)
+            // {
+            //     Instantiate(teleportEffect, transform.position, Quaternion.identity);
+            // }
 
-            // 松开跳跃键时减少跳跃高度（实现可变高度跳跃）
-            if (!JumpPressed && velocity.y > 0.0f && isJumping)
+            yield return new WaitForSeconds(0.1f);
+            
+            characterController.enabled = false;
+            transform.position = targetPosition;
+            characterController.enabled = true;
+            
+            // 可选：在目标位置播放传送特效
+            // if (teleportEffect != null)
+            // {
+            //     Instantiate(teleportEffect, transform.position, Quaternion.identity);
+            // }
+            
+            Debug.Log("传送到位置: " + targetPosition + "\n传送物体名称: " + hit.collider.tag);
+        }
+        else
+        {
+            Debug.Log("前方没有可传送的方块");
+        }
+        
+        lastTeleportTime = Time.time;
+        isTeleporting = false;
+    }
+    
+    // 可视化传送检测射线（调试用）
+    void OnDrawGizmosSelected()
+    {
+        if (canTeleport && !isTeleporting)
+        {
+            Gizmos.color = Color.blue;
+            Vector3 rayStart = transform.position + Vector3.up * 0.5f;
+            
+            // 使用与传送相同的方向计算逻辑
+            Vector3 teleportDirection = transform.forward;
+            teleportDirection.y = 0;
+            teleportDirection.Normalize();
+            
+            // 限制只能向X轴或Z轴传送
+            if (Mathf.Abs(teleportDirection.x) > Mathf.Abs(teleportDirection.z))
             {
-                velocity.y += gravity * Time.deltaTime * 0.5f;
+                teleportDirection = new Vector3(Mathf.Sign(teleportDirection.x), 0, 0);
             }
             else
             {
-                velocity.y += gravity * Time.deltaTime;
+                teleportDirection = new Vector3(0, 0, Mathf.Sign(teleportDirection.z));
             }
+            
+            Gizmos.DrawRay(rayStart, teleportDirection * teleportDistance);
         }
-
-        // 应用垂直速度
-        move.y = velocity.y;
     }
 
     void handleAnimation()
@@ -281,22 +358,33 @@ public class Move_Controller : MonoBehaviour
         animator.SetFloat(VelocityHash, velocity_A);
     }
 
-    void handleRotation()
+void handleRotation()
+{
+    if (MovePressed)
     {
-        Vector3 positionToLookAt;
+        // 获取摄像机方向
+        Vector3 camForward = Camera.main.transform.forward;
+        camForward.y = 0;
+        camForward.Normalize();
 
-        positionToLookAt.x = currentMove.x;
-        positionToLookAt.y = 0.0f;
-        positionToLookAt.z = currentMove.z;
+        Vector3 camRight = Camera.main.transform.right;
+        camRight.y = 0;
+        camRight.Normalize();
 
-        Quaternion currentRotation = transform.rotation;
-
-        if (MovePressed)
+        // 计算基于摄像机方向的移动向量
+        Vector3 moveDirection = (camRight * currentMoveInput.x + camForward * currentMoveInput.y).normalized;
+        
+        // 只有当移动方向有有效值时才旋转
+        if (moveDirection != Vector3.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
-            transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, rotationFactorPerFrame * Time.deltaTime);
+            // 创建目标旋转
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            
+            // 平滑旋转到目标方向
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationFactorPerFrame * Time.deltaTime * 2);
         }
     }
+}
 
     void Awake()
     {
@@ -317,9 +405,12 @@ public class Move_Controller : MonoBehaviour
 
         playerInput.player.run.performed += onRunInput;
         playerInput.player.run.canceled += onRunInput;
-        
+
         playerInput.player.jump.performed += onJumpInput;
         playerInput.player.jump.canceled += onJumpInput;
+        
+        playerInput.player.run.performed += onTeleportInput;
+        playerInput.player.run.canceled += onTeleportInput;
     }
 
     void OnDisable()
@@ -332,6 +423,7 @@ public class Move_Controller : MonoBehaviour
         handleMovement();
         handleRotation();
         handleAnimation();
+        HandleTeleport();
     }
 
 }
