@@ -11,8 +11,8 @@ public class Move_Controller : MonoBehaviour
     Animator animator;
 
     [Header("Movement Settings")]
-    public float WalkSpeed = 2.0f;
-    public float RunSpeed = 4.0f;
+    public float WalkSpeed = 4.0f;
+    public float RunSpeed = 6.0f;
     public float gravity = -9.81f;
     public float rotationFactorPerFrame = 5.0f;
 

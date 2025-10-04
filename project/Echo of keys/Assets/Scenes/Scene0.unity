@@ -1904,6 +1904,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: oneBlock
       objectReference: {fileID: 0}
+    - target: {fileID: 7354029724254392423, guid: 30ae16b29b50540618b0917a36c2dd5b,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
