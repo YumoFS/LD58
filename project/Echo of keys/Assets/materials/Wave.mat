@@ -7,8 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: S0_funcBlock
-  m_Shader: {fileID: 4800000, guid: 4c7706e8b2c7647a89f34a3b631e1f0b, type: 3}
+  m_Name: Wave
+  m_Shader: {fileID: -6465566751694194690, guid: c7cf441c626e04e68adb1b9f910600b1,
+    type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -19,7 +20,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: _TopColor
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -83,6 +84,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _Amplitute: 0.2
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -101,6 +103,7 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
@@ -109,17 +112,16 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _TimeSpeed: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.8392157, g: 0.89411765, b: 0.8862745, a: 1}
-    - _Color: {r: 1, g: 0.9251573, b: 0.13679245, a: 1}
+    - _BaseColor: {r: 0.7248576, g: 0.8532042, b: 0.8584906, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FrontColor: {r: 0.8903206, g: 0.9245283, b: 0.51023495, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _TopColor: {r: 0.944608, g: 0.9622642, b: 0.72169816, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &7962988333709506816
+--- !u!114 &5426948014835433768
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
