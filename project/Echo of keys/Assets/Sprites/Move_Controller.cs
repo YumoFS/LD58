@@ -146,7 +146,7 @@ public class Move_Controller : MonoBehaviour
         }
     }
 
-    void hanleMovement()
+    void handleMovement()
     {
         Vector3 move = Vector3.zero;
         if (MovePressed)
@@ -263,7 +263,7 @@ public class Move_Controller : MonoBehaviour
 
         Quaternion currentRotation = transform.rotation;
 
-        if (MovePressed && currentMove.z >= 0)
+        if (MovePressed)
         {
             Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
             transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, rotationFactorPerFrame * Time.deltaTime);
@@ -301,7 +301,7 @@ public class Move_Controller : MonoBehaviour
 
     void Update()
     {
-        hanleMovement();
+        handleMovement();
         handleRotation();
         handleAnimation();
     }
