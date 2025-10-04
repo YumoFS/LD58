@@ -104,27 +104,55 @@ public class Move_Controller : MonoBehaviour
         {
             case "forward":
                 canMoveForward = true;
-                Debug.Log("解锁向前移动能力!");
+                // Debug.Log("解锁向前移动能力!");
                 break;
             case "backward":
                 canMoveBackward = true;
-                Debug.Log("解锁向后移动能力!");
+                // Debug.Log("解锁向后移动能力!");
                 break;
             case "left":
                 canMoveLeft = true;
-                Debug.Log("解锁向左移动能力!");
+                // Debug.Log("解锁向左移动能力!");
                 break;
             case "right":
                 canMoveRight = true;
-                Debug.Log("解锁向右移动能力!");
+                // Debug.Log("解锁向右移动能力!");
                 break;
             case "run":
                 canRun = true;
-                Debug.Log("解锁奔跑能力!");
+                // Debug.Log("解锁奔跑能力!");
                 break;
             case "jump":
                 canJump = true;
-                Debug.Log("解锁跳跃能力!");
+                // Debug.Log("解锁跳跃能力!");
+                break;
+            default:
+                Debug.LogWarning("未知的移动方向: " + direction);
+                break;
+        }
+    }
+
+    public void ChangeMovementDirectionLock(string direction)
+    {
+        switch (direction.ToLower())
+        {
+            case "forward":
+                canMoveForward = !canMoveForward;
+                break;
+            case "backward":
+                canMoveBackward = !canMoveBackward;
+                break;
+            case "left":
+                canMoveLeft = !canMoveLeft;
+                break;
+            case "right":
+                canMoveRight = !canMoveRight;
+                break;
+            case "run":
+                canRun = !canRun;
+                break;
+            case "jump":
+                canJump = !canJump;
                 break;
             default:
                 Debug.LogWarning("未知的移动方向: " + direction);
