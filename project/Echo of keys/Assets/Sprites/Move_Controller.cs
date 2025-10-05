@@ -28,11 +28,18 @@ public class Move_Controller : MonoBehaviour
     public bool canMoveLeft = false;
     public bool canMoveRight = false;
     public bool canRun = false;
+    public bool haveTeleport = false;
     public bool canTeleport = false;
+    public bool haveRecall = false;
     public bool canRecall = false; // 新增召回能力
+    public bool haveDelete = false;
     public bool canDelete = false;
+    public bool haveAdd = false;
     public bool canAdd = false;
     public bool canInteraction = false;
+    public bool haveCopperKey = false;
+    public bool haveSilverKey = false;
+    public bool haveGoldenKey = false;
 
     [Header("Teleport Settings")]
     public float teleportDistance = 10f;
@@ -140,13 +147,32 @@ public class Move_Controller : MonoBehaviour
                 canRun = true;
                 break;
             case "teleport":
+                haveTeleport = true;
                 canTeleport = true;
                 break;
             case "recall": 
                 canRecall = true;
+                haveRecall = true;
+                break;
+            case "delete":
+                haveDelete = true;
+                canDelete = true;
+                break;
+            case "add": 
+                canAdd = true;
+                haveAdd = true;
                 break;
             case "interaction": 
                 canInteraction = true;
+                break;
+            case "copper": 
+                haveCopperKey = true;
+                break;
+            case "silver": 
+                haveSilverKey = true;
+                break;
+            case "golden": 
+                haveGoldenKey = true;
                 break;
             default:
                 Debug.LogWarning("未知的移动方向: " + direction);
@@ -174,10 +200,16 @@ public class Move_Controller : MonoBehaviour
                 canRun = !canRun;
                 break;
             case "teleport":
-                canTeleport = !canTeleport;
+                if (haveTeleport) canTeleport = !canTeleport;
                 break;
-            case "recall": // 新增召回锁定切换
-                canRecall = !canRecall;
+            case "recall":
+                if (haveRecall) canRecall = !canRecall;
+                break;
+            case "delete":
+                if (haveDelete) canDelete = !canDelete;
+                break;
+            case "add":
+                if (haveAdd) canAdd = !canAdd;
                 break;
             default:
                 Debug.LogWarning("未知的移动方向: " + direction);
@@ -253,6 +285,9 @@ public class Move_Controller : MonoBehaviour
         }
         
         Vector3 rayStart = transform.position - Vector3.up * 0.5f;
+        // Vector3 stoneRayStart = transform.position + Vector3.up * 0.5f;
+
+        // RaycastHit stoneHit = Physics.Raycast(stoneRayStart, teleportDirection, teleportDistance);
         
         // 使用RaycastAll获取所有命中物体
         RaycastHit[] hits = Physics.RaycastAll(rayStart, teleportDirection, teleportDistance, teleportLayerMask);

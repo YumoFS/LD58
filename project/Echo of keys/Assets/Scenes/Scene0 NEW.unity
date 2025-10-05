@@ -307,7 +307,7 @@ MonoBehaviour:
   zoomSpeed: 0
   minFOV: 32
   maxFOV: 32
-  followSmooth: 5
+  followSmooth: 70
 --- !u!114 &105316537
 MonoBehaviour:
   m_ObjectHideFlags: 0
