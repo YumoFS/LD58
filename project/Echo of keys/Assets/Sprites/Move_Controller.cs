@@ -35,6 +35,8 @@ public class Move_Controller : MonoBehaviour
     public bool canRun = false;
     // public bool canJump = true; // 可以控制是否允许跳跃
     public bool canTeleport = false;
+    public bool canDelete = true;
+    public bool canAdd = true;
 
     [Header("Teleport Settings")]
     public float teleportDistance = 10f;

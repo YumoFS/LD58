@@ -7,6 +7,7 @@ TagManager:
   - AirWall
   - Stone
   - Block
+  - hiddenBlock
   layers:
   - Default
   - TransparentFX
