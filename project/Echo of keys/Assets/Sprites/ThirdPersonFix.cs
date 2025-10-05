@@ -10,17 +10,17 @@ public class ThirdPersonFix : MonoBehaviour
 
     [Header("Target")]
     public Transform target;         // 要跟随的角色
-    public Vector3 offset = new Vector3(0, 8f, -10f); // 默认相机偏移
+    public Vector3 offset = new Vector3(0, 5f, -3f); // 默认相机偏移
 
     [Header("Zoom Settings")]
     public float zoomSpeed = 0f;     // 滚轮缩放灵敏度
-    public float minFOV = 32f;       // 最小FOV（放大到最大）
-    public float maxFOV = 32f;       // 最大FOV（缩小到最远）
+    public float minFOV = 60f;       // 最小FOV（放大到最大）
+    public float maxFOV = 60f;       // 最大FOV（缩小到最远）
     private float zoomInput;
     private float currentDistance;   // 固定距离（用于跟随计算）
 
     [Header("Follow Settings")]
-    public float followSmooth = 5f;  // 跟随平滑度
+    public float followSmooth = 70f;  // 跟随平滑度
 
     void OnZoomInput(InputAction.CallbackContext context)
     {
@@ -39,7 +39,6 @@ public class ThirdPersonFix : MonoBehaviour
         // 基于摄像机 FOV 的缩放计算
         if (Mathf.Abs(zoomInput) > 0.01f)
         {
-            // 调整FOV - 注意这里的方向
             cam.fieldOfView -= zoomInput * zoomSpeed * Time.deltaTime;
             cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, minFOV, maxFOV);
         }
@@ -73,7 +72,7 @@ public class ThirdPersonFix : MonoBehaviour
         // 关键修改：初始化FOV为最小值（放大到最大）
         if (cam != null)
         {
-            cam.fieldOfView = minFOV;
+            cam.fieldOfView = maxFOV;
         }
         
         // 固定距离（跟随计算使用）

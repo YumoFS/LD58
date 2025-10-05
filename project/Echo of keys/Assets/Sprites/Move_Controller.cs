@@ -37,12 +37,13 @@ public class Move_Controller : MonoBehaviour
     public bool haveAdd = false;
     public bool canAdd = false;
     public bool canInteraction = false;
+    public bool haveIronKey = false;
     public bool haveCopperKey = false;
     public bool haveSilverKey = false;
     public bool haveGoldenKey = false;
 
     [Header("Teleport Settings")]
-    public float teleportDistance = 10f;
+    public float teleportDistance = 5f;
     public float teleportCooldown = 1f;
     public LayerMask teleportLayerMask = 1;
     public GameObject teleportEffect;
@@ -174,6 +175,9 @@ public class Move_Controller : MonoBehaviour
                 break;
             case "golden": 
                 haveGoldenKey = true;
+                break;
+            case "iron": 
+                haveIronKey = true;
                 break;
             default:
                 Debug.LogWarning("未知的移动方向: " + direction);
