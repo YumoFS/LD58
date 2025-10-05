@@ -16,11 +16,6 @@ public class Move_Controller : MonoBehaviour
     public float gravity = -9.81f;
     public float rotationFactorPerFrame = 5.0f;
 
-    // [Header("Jump Settings")]
-    // public float jumpHeight = 1.5f;
-    // public float jumpTimeout = 0.1f; // 防止连续跳跃的时间间隔
-    // public float fallTimeout = 0.15f; // 落地检测的时间间隔
-
     [Header("Animation Settings")]
     public float acceleration = 0.8f;
     public float deceleration = 0.8f;
@@ -33,38 +28,42 @@ public class Move_Controller : MonoBehaviour
     public bool canMoveLeft = false;
     public bool canMoveRight = false;
     public bool canRun = false;
-    // public bool canJump = true; // 可以控制是否允许跳跃
     public bool canTeleport = false;
+    public bool canRecall = false; // 新增召回能力
     public bool canDelete = true;
     public bool canAdd = true;
 
     [Header("Teleport Settings")]
     public float teleportDistance = 10f;
     public float teleportCooldown = 1f;
-    public LayerMask teleportLayerMask = 1; // 可传送到的层级
-    public GameObject teleportEffect; // 传送特效（可选）
+    public LayerMask teleportLayerMask = 1;
+    public GameObject teleportEffect;
+
+    [Header("Recall Settings")] // 新增召回设置
+    public float recallCooldown = 2f;
+    public GameObject recallEffect;
+    public GameObject markEffect; // 标记位置的特效
 
     Vector2 currentMoveInput;
     Vector3 currentMove;
     float velocity_A = 0.0f;
     bool MovePressed;
     bool RunPressed;
-    // bool JumpPressed;
     bool TeleportPressed;
     private Vector3 velocity;
-
-    // 跳跃相关变量
-    // private float jumpTimeoutDelta;
-    // private float fallTimeoutDelta;
-    // private bool isJumping = false;
 
     //传送相关变量
     private float lastTeleportTime;
     private bool isTeleporting = false;
 
+    //召回相关变量
+    private Vector3 recalledPosition; // 记录的位置
+    private bool hasRecordedPosition = false; // 是否已记录位置
+    private float lastRecallTime;
+    private bool isRecalling = false;
+
     // Animator 参数哈希
     int VelocityHash;
-    // int JumpHash;
     int GroundedHash;
 
     void onMovementInput(InputAction.CallbackContext context)
@@ -83,23 +82,23 @@ public class Move_Controller : MonoBehaviour
         if (canRun)
         {
             RunPressed = context.ReadValue<float>() > 0.5f;
-
         }
     }
-
-    // void onJumpInput(InputAction.CallbackContext context)
-    // {
-    //     if (canJump) // 只有允许跳跃时才响应
-    //     {
-    //         JumpPressed = context.ReadValue<float>() > 0.5f;
-    //     }
-    // }
 
     void onTeleportInput(InputAction.CallbackContext context)
     {
         if (canTeleport) // 只有允许传送时才响应
         {
             TeleportPressed = context.ReadValue<float>() > 0.5f;
+        }
+    }
+
+    // 新增召回输入处理
+    void onRecallInput(InputAction.CallbackContext context)
+    {
+        if (canRecall && !canTeleport) // 只有允许召回且不允许传送时才响应
+        {
+            HandleRecall();
         }
     }
 
@@ -126,31 +125,24 @@ public class Move_Controller : MonoBehaviour
         {
             case "forward":
                 canMoveForward = true;
-                // Debug.Log("解锁向前移动能力!");
                 break;
             case "backward":
                 canMoveBackward = true;
-                // Debug.Log("解锁向后移动能力!");
                 break;
             case "left":
                 canMoveLeft = true;
-                // Debug.Log("解锁向左移动能力!");
                 break;
             case "right":
                 canMoveRight = true;
-                // Debug.Log("解锁向右移动能力!");
                 break;
             case "run":
                 canRun = true;
-                // Debug.Log("解锁奔跑能力!");
                 break;
-            // case "jump":
-            //     canJump = true;
-            //     // Debug.Log("解锁跳跃能力!");
-            //     break;
             case "teleport":
                 canTeleport = true;
-                // Debug.Log("解锁传送能力!");
+                break;
+            case "recall": // 新增召回解锁
+                canRecall = true;
                 break;
             default:
                 Debug.LogWarning("未知的移动方向: " + direction);
@@ -177,11 +169,11 @@ public class Move_Controller : MonoBehaviour
             case "run":
                 canRun = !canRun;
                 break;
-            // case "jump":
-            //     canJump = !canJump;
-            //     break;
             case "teleport":
                 canTeleport = !canTeleport;
+                break;
+            case "recall": // 新增召回锁定切换
+                canRecall = !canRecall;
                 break;
             default:
                 Debug.LogWarning("未知的移动方向: " + direction);
@@ -198,8 +190,8 @@ public class Move_Controller : MonoBehaviour
             case "left": return canMoveLeft;
             case "right": return canMoveRight;
             case "run": return canRun;
-            // case "jump": return canJump;
             case "teleport": return canTeleport;
+            case "recall": return canRecall; // 新增召回查询
             default: return false;
         }
     }
@@ -283,23 +275,11 @@ public class Move_Controller : MonoBehaviour
             targetPosition.y = hit.collider.bounds.max.y;
             targetPosition += teleportDirection;
             
-            // 可选：播放传送特效
-            // if (teleportEffect != null)
-            // {
-            //     Instantiate(teleportEffect, transform.position, Quaternion.identity);
-            // }
-
             yield return new WaitForSeconds(0.1f);
             
             characterController.enabled = false;
             transform.position = targetPosition;
             characterController.enabled = true;
-            
-            // 可选：在目标位置播放传送特效
-            // if (teleportEffect != null)
-            // {
-            //     Instantiate(teleportEffect, transform.position, Quaternion.identity);
-            // }
             
             Debug.Log("传送到位置: " + targetPosition + "\n传送物体名称: " + hit.collider.tag);
         }
@@ -311,8 +291,97 @@ public class Move_Controller : MonoBehaviour
         lastTeleportTime = Time.time;
         isTeleporting = false;
     }
+
+    // 检查玩家脚下是否为Block
+    private bool IsOnBlock()
+    {
+        // 从玩家位置向下发射射线检测脚下的方块
+        RaycastHit hit;
+        float raycastDistance = 1.5f; // 射线距离，根据角色高度调整
+        
+        // 射线起点在玩家中心位置稍微上方，方向向下
+        Vector3 rayStart = transform.position + Vector3.up * 0.1f;
+        
+        if (Physics.Raycast(rayStart, Vector3.down, out hit, raycastDistance))
+        {
+            // 检查命中的物体是否为Block
+            if (hit.collider.CompareTag("Block"))
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    // 新增召回功能
+    void HandleRecall()
+    {
+        if (!canRecall || canTeleport || isRecalling) return;
+        
+        // 检查冷却时间
+        if (Time.time - lastRecallTime < recallCooldown) return;
+        
+        if (!hasRecordedPosition)
+        {
+            // 检查玩家是否站在Block上
+            if (!IsOnBlock())
+            {
+                Debug.Log("无法记录位置：玩家必须站在Block上才能记录");
+                return;
+            }
+            
+            // 记录当前位置
+            recalledPosition = transform.position;
+            hasRecordedPosition = true;
+            
+            // 播放标记特效
+            if (markEffect != null)
+            {
+                Instantiate(markEffect, recalledPosition, Quaternion.identity);
+            }
+            
+            Debug.Log("位置已记录: " + recalledPosition);
+        }
+        else
+        {
+            // 执行召回
+            StartCoroutine(PerformRecall());
+        }
+        
+        lastRecallTime = Time.time;
+    }
     
-    // 可视化传送检测射线（调试用）
+    IEnumerator PerformRecall()
+    {
+        isRecalling = true;
+        
+        // 播放召回特效（开始）
+        if (recallEffect != null)
+        {
+            Instantiate(recallEffect, transform.position, Quaternion.identity);
+        }
+
+        yield return new WaitForSeconds(0.1f);
+        
+        characterController.enabled = false;
+        transform.position = recalledPosition;
+        characterController.enabled = true;
+        
+        // 播放召回特效（结束）
+        if (recallEffect != null)
+        {
+            Instantiate(recallEffect, transform.position, Quaternion.identity);
+        }
+        
+        Debug.Log("召回至位置: " + recalledPosition);
+        
+        // 召回后重置记录状态
+        hasRecordedPosition = false;
+        isRecalling = false;
+    }
+    
+    // 可视化传送检测射线和脚下检测（调试用）
     void OnDrawGizmosSelected()
     {
         if (canTeleport && !isTeleporting)
@@ -336,6 +405,22 @@ public class Move_Controller : MonoBehaviour
             }
             
             Gizmos.DrawRay(rayStart, teleportDirection * teleportDistance);
+        }
+        
+        // 可视化记录的位置（调试用）
+        if (hasRecordedPosition)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(recalledPosition, 0.5f);
+            Gizmos.DrawLine(transform.position, recalledPosition);
+        }
+        
+        // 可视化脚下检测射线（调试用）
+        if (canRecall)
+        {
+            Gizmos.color = Color.yellow;
+            Vector3 rayStart = transform.position + Vector3.up * 0.1f;
+            Gizmos.DrawRay(rayStart, Vector3.down * 1.5f);
         }
     }
 
@@ -362,33 +447,33 @@ public class Move_Controller : MonoBehaviour
         animator.SetFloat(VelocityHash, velocity_A);
     }
 
-void handleRotation()
-{
-    if (MovePressed)
+    void handleRotation()
     {
-        // 获取摄像机方向
-        Vector3 camForward = Camera.main.transform.forward;
-        camForward.y = 0;
-        camForward.Normalize();
-
-        Vector3 camRight = Camera.main.transform.right;
-        camRight.y = 0;
-        camRight.Normalize();
-
-        // 计算基于摄像机方向的移动向量
-        Vector3 moveDirection = (camRight * currentMoveInput.x + camForward * currentMoveInput.y).normalized;
-        
-        // 只有当移动方向有有效值时才旋转
-        if (moveDirection != Vector3.zero)
+        if (MovePressed)
         {
-            // 创建目标旋转
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            // 获取摄像机方向
+            Vector3 camForward = Camera.main.transform.forward;
+            camForward.y = 0;
+            camForward.Normalize();
+
+            Vector3 camRight = Camera.main.transform.right;
+            camRight.y = 0;
+            camRight.Normalize();
+
+            // 计算基于摄像机方向的移动向量
+            Vector3 moveDirection = (camRight * currentMoveInput.x + camForward * currentMoveInput.y).normalized;
             
-            // 平滑旋转到目标方向
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationFactorPerFrame * Time.deltaTime * 2);
+            // 只有当移动方向有有效值时才旋转
+            if (moveDirection != Vector3.zero)
+            {
+                // 创建目标旋转
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                
+                // 平滑旋转到目标方向
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationFactorPerFrame * Time.deltaTime * 2);
+            }
         }
     }
-}
 
     void Awake()
     {
@@ -398,23 +483,19 @@ void handleRotation()
         animator = GetComponent<Animator>();
 
         VelocityHash = Animator.StringToHash("speed");
-        // JumpHash = Animator.StringToHash("isJumping");
         GroundedHash = Animator.StringToHash("isGrounded");
-
-        // jumpTimeoutDelta = jumpTimeout;
-        // fallTimeoutDelta = fallTimeout;
 
         playerInput.player.move.performed += onMovementInput;
         playerInput.player.move.canceled += onMovementInput;
 
         playerInput.player.run.performed += onRunInput;
         playerInput.player.run.canceled += onRunInput;
-
-        // playerInput.player.jump.performed += onJumpInput;
-        // playerInput.player.jump.canceled += onJumpInput;
         
         playerInput.player.run.performed += onTeleportInput;
         playerInput.player.run.canceled += onTeleportInput;
+        
+        // 新增召回输入绑定
+        playerInput.player.run.performed += onRecallInput;
     }
 
     void OnDisable()
@@ -428,6 +509,6 @@ void handleRotation()
         handleRotation();
         handleAnimation();
         HandleTeleport();
+        // 召回功能在输入回调中处理，不需要在Update中调用
     }
-
 }
