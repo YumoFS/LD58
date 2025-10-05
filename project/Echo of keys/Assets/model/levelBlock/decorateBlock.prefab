@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 111124926421376679}
   m_Layer: 0
   m_Name: decorateBlock
-  m_TagString: Untagged
+  m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
