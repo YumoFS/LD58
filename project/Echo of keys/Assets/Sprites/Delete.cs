@@ -280,7 +280,7 @@ public class ObjectSelector : MonoBehaviour
         {
             // 检查玩家是否在当前方块上
             float distanceToBlock = Vector3.Distance(transform.position, currentAddedBlock.transform.position);
-            bool isPlayerOnBlock = distanceToBlock < 3f; // 假设玩家在方块上时的距离阈值
+            bool isPlayerOnBlock = distanceToBlock < 2f; // 假设玩家在方块上时的距离阈值
             
             if (isPlayerOnBlock)
             {
