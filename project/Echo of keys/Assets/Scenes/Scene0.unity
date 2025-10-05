@@ -2020,10 +2020,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a98da49e6d13e454281e7efd9ca98c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleKey: 127
   outlineMaterial: {fileID: 2100000, guid: 1b8f7a34e10c5324298e27599b21c492, type: 2}
   outlineColor: {r: 1, g: 0, b: 0, a: 1}
   outlineWidth: 0.05
+  allowedDeletionTag: Stone
 --- !u!4 &1488069772 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8779137400540313616, guid: a5b93d82299f39b41991ccf4a3545be8,
@@ -2709,7 +2709,7 @@ PrefabInstance:
     - target: {fileID: 8779137400540313616, guid: a5b93d82299f39b41991ccf4a3545be8,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.31
+      value: 9.14
       objectReference: {fileID: 0}
     - target: {fileID: 8779137400540313616, guid: a5b93d82299f39b41991ccf4a3545be8,
         type: 3}
