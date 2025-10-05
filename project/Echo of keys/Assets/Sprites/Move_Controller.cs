@@ -46,6 +46,7 @@ public class Move_Controller : MonoBehaviour
     public float teleportCooldown = 1f;
     public LayerMask teleportLayerMask = 1;
     public GameObject teleportEffect;
+    public GameObject unableTeleportEffect;
 
     [Header("Recall Settings")] // 新增召回设置
     public float recallCooldown = 2f;
@@ -285,9 +286,19 @@ public class Move_Controller : MonoBehaviour
         }
         
         Vector3 rayStart = transform.position - Vector3.up * 0.5f;
-        // Vector3 stoneRayStart = transform.position + Vector3.up * 0.5f;
+        Vector3 stoneRayStart = transform.position + Vector3.up * 0.5f;
 
-        // RaycastHit stoneHit = Physics.Raycast(stoneRayStart, teleportDirection, teleportDistance);
+        RaycastHit[] stoneHits = Physics.RaycastAll(stoneRayStart, teleportDirection, teleportDistance, teleportLayerMask);
+
+        foreach (RaycastHit h in stoneHits)
+        {
+            if (h.collider.CompareTag("Stone"))
+            {
+                Debug.Log("无法传送通过障碍");
+                Instantiate(unableTeleportEffect, transform.position, Quaternion.identity);
+                yield break;
+            }
+        }
         
         // 使用RaycastAll获取所有命中物体
         RaycastHit[] hits = Physics.RaycastAll(rayStart, teleportDirection, teleportDistance, teleportLayerMask);
