@@ -16,6 +16,9 @@ public class ObjectSelector : MonoBehaviour
     public GameObject createdBlockPrefab; // 要生成的预制体
     public string ignoreTag = "AirWall"; // 射线会穿透的标签
     
+    [Header("Add Mode Settings")]
+    public float blockLifetimeAfterExit = 3f; // 玩家离开后方块保持的时间
+    
     private Move_Controller moveController;
     private bool selectionMode = false;
     private GameObject selectedObject;
@@ -24,6 +27,9 @@ public class ObjectSelector : MonoBehaviour
     private List<GameObject> createdBlocks = new List<GameObject>(); // 存储已创建的方块
     private Vector3 previewPosition; // 预览位置
     private bool isPositionValid = true; // 位置是否有效（在距离范围内）
+    private GameObject currentAddedBlock; // 当前添加的方块
+    private bool canAddNewBlock = true; // 是否可以添加新方块
+    private Coroutine blockLifetimeCoroutine; // 方块生命周期协程
     
     void Start()
     {
@@ -59,6 +65,9 @@ public class ObjectSelector : MonoBehaviour
         {
             HandleSelection();
         }
+        
+        // 检查当前方块是否需要消失
+        CheckCurrentBlockStatus();
     }
     
     bool CanEnterSelectionMode()
@@ -137,10 +146,15 @@ public class ObjectSelector : MonoBehaviour
                     }
                 }
             }
-            else if (moveController.canAdd)
+            else if (moveController.canAdd && canAddNewBlock)
             {
                 // 添加模式下放置方块
                 PlaceBlockAtGridPosition();
+            }
+            else if (moveController.canAdd && !canAddNewBlock)
+            {
+                Debug.Log("请等待当前方块消失后再添加新方块");
+                StartCoroutine(FlashOutlineColor(Color.yellow, 0.5f));
             }
         }
         
@@ -157,9 +171,14 @@ public class ObjectSelector : MonoBehaviour
         }
         
         // 添加模式下，按H键也可以放置方块
-        if (Input.GetKeyDown(KeyCode.H) && moveController.canAdd)
+        if (Input.GetKeyDown(KeyCode.H) && moveController.canAdd && canAddNewBlock)
         {
             PlaceBlockAtGridPosition();
+        }
+        else if (Input.GetKeyDown(KeyCode.H) && moveController.canAdd && !canAddNewBlock)
+        {
+            Debug.Log("请等待当前方块消失后再添加新方块");
+            StartCoroutine(FlashOutlineColor(Color.yellow, 0.5f));
         }
     }
     
@@ -237,16 +256,82 @@ public class ObjectSelector : MonoBehaviour
             GameObject newBlock = Instantiate(createdBlockPrefab, previewPosition, Quaternion.identity);
             newBlock.name = "createdBlock"; // 设置名称为createdBlock
             
+            // 设置为当前添加的方块
+            currentAddedBlock = newBlock;
+            canAddNewBlock = false;
+            
             // 添加到已创建方块列表
             createdBlocks.Add(newBlock);
             
             Debug.Log($"在网格位置 {previewPosition} 生成了方块 (距离: {distance:F1})");
+            Debug.Log($"方块将在玩家经过并离开后 {blockLifetimeAfterExit} 秒消失");
         }
         else
         {
             Debug.Log("该网格位置已有方块，无法放置新方块");
             StartCoroutine(FlashOutlineColor(Color.yellow, 0.5f));
         }
+    }
+    
+    // 检查当前方块状态
+    void CheckCurrentBlockStatus()
+    {
+        if (currentAddedBlock != null && !canAddNewBlock)
+        {
+            // 检查玩家是否在当前方块上
+            float distanceToBlock = Vector3.Distance(transform.position, currentAddedBlock.transform.position);
+            bool isPlayerOnBlock = distanceToBlock < 3f; // 假设玩家在方块上时的距离阈值
+            
+            if (isPlayerOnBlock)
+            {
+                // 玩家在方块上，重置协程
+                if (blockLifetimeCoroutine != null)
+                {
+                    StopCoroutine(blockLifetimeCoroutine);
+                    blockLifetimeCoroutine = null;
+                }
+            }
+            else
+            {
+                // 玩家不在方块上，开始计时
+                if (blockLifetimeCoroutine == null)
+                {
+                    blockLifetimeCoroutine = StartCoroutine(BlockLifetimeCountdown());
+                }
+            }
+        }
+    }
+    
+    // 方块生命周期倒计时
+    IEnumerator BlockLifetimeCountdown()
+    {
+        float timer = blockLifetimeAfterExit;
+        
+        while (timer > 0)
+        {
+            // 检查玩家是否重新进入方块区域
+            float distanceToBlock = Vector3.Distance(transform.position, currentAddedBlock.transform.position);
+            if (distanceToBlock < 1.5f)
+            {
+                // 玩家重新进入，取消倒计时
+                yield break;
+            }
+            
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+        
+        // 时间到，销毁方块
+        if (currentAddedBlock != null)
+        {
+            Debug.Log($"方块存在时间结束，已销毁");
+            Destroy(currentAddedBlock);
+            createdBlocks.Remove(currentAddedBlock);
+            currentAddedBlock = null;
+            canAddNewBlock = true;
+        }
+        
+        blockLifetimeCoroutine = null;
     }
     
     // 检查位置是否已被占用
@@ -376,6 +461,20 @@ public class ObjectSelector : MonoBehaviour
             float distance = Vector3.Distance(transform.position, selectedObject.transform.position);
             Debug.Log($"删除 {deletionTag} 物体: {selectedObject.name} (距离: {distance:F1})");
             
+            // 如果是当前添加的方块，重置状态
+            if (selectedObject == currentAddedBlock)
+            {
+                currentAddedBlock = null;
+                canAddNewBlock = true;
+                
+                // 停止协程
+                if (blockLifetimeCoroutine != null)
+                {
+                    StopCoroutine(blockLifetimeCoroutine);
+                    blockLifetimeCoroutine = null;
+                }
+            }
+            
             // 如果是创建的方块，从列表中移除
             if (createdBlocks.Contains(selectedObject))
             {
@@ -478,25 +577,36 @@ public class ObjectSelector : MonoBehaviour
             }
             else if (moveController.canAdd)
             {
-                GUI.Box(new Rect(10, 10, 300, 150), "添加模式");
+                GUI.Box(new Rect(10, 10, 300, 180), "添加模式");
                 GUI.Label(new Rect(20, 40, 280, 20), "左键点击: 放置方块");
                 GUI.Label(new Rect(20, 60, 280, 20), "H 键: 放置方块");
                 GUI.Label(new Rect(20, 80, 280, 20), "Delete 键: 退出模式");
                 GUI.Label(new Rect(20, 100, 280, 20), "在网格位置生成方块");
                 GUI.Label(new Rect(20, 120, 280, 20), $"最大距离: {maxDistance}");
                 
+                // 显示添加状态
+                string addStatus = canAddNewBlock ? "可以添加" : "已有方块，等待消失";
+                Color statusColor = canAddNewBlock ? Color.green : Color.yellow;
+                GUI.Label(new Rect(20, 140, 280, 20), $"状态: {addStatus}");
+                
                 // 显示网格位置和距离
                 float distance = Vector3.Distance(transform.position, previewPosition);
                 string distanceStatus = distance <= maxDistance ? "有效" : "太远";
-                Color statusColor = distance <= maxDistance ? Color.green : Color.red;
+                Color distanceColor = distance <= maxDistance ? Color.green : Color.red;
                 
-                GUI.Box(new Rect(10, 140, 300, 60), 
+                GUI.Box(new Rect(10, 160, 300, 60), 
                     $"网格位置: {previewPosition.x:F1}, {previewPosition.z:F1}\n距离: {distance:F1}\n状态: {distanceStatus}");
                 
                 // 显示网格坐标
                 int gridX = Mathf.RoundToInt((previewPosition.x + 1) / 2f);
                 int gridZ = Mathf.RoundToInt((previewPosition.z + 1) / 2f);
-                GUI.Box(new Rect(10, 210, 300, 30), $"网格坐标: ({gridX}, {gridZ})");
+                GUI.Box(new Rect(10, 230, 300, 30), $"网格坐标: ({gridX}, {gridZ})");
+                
+                // 如果当前有方块，显示倒计时
+                if (currentAddedBlock != null && blockLifetimeCoroutine != null)
+                {
+                    GUI.Box(new Rect(10, 270, 300, 30), $"方块将在玩家离开后 {blockLifetimeAfterExit} 秒消失");
+                }
             }
         }
     }

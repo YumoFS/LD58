@@ -2029,6 +2029,7 @@ MonoBehaviour:
   createdBlockPrefab: {fileID: 3981776076672954296, guid: 57648f78ffc3e614fb6fcff37ec5d1f6,
     type: 3}
   ignoreTag: AirWall
+  blockLifetimeAfterExit: 3
 --- !u!4 &1488069772 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8779137400540313616, guid: a5b93d82299f39b41991ccf4a3545be8,
