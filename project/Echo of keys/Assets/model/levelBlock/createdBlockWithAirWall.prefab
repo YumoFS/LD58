@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1385462645928430421}
   - component: {fileID: 5810745242993573632}
   m_Layer: 0
-  m_Name: hiddenBlockWithAirWall
+  m_Name: createdBlockWithAirWall
   m_TagString: hiddenBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
