@@ -16,10 +16,10 @@ public class Move_Controller : MonoBehaviour
     public float gravity = -9.81f;
     public float rotationFactorPerFrame = 5.0f;
 
-    [Header("Jump Settings")]
-    public float jumpHeight = 1.5f;
-    public float jumpTimeout = 0.1f; // 防止连续跳跃的时间间隔
-    public float fallTimeout = 0.15f; // 落地检测的时间间隔
+    // [Header("Jump Settings")]
+    // public float jumpHeight = 1.5f;
+    // public float jumpTimeout = 0.1f; // 防止连续跳跃的时间间隔
+    // public float fallTimeout = 0.15f; // 落地检测的时间间隔
 
     [Header("Animation Settings")]
     public float acceleration = 0.8f;
@@ -33,7 +33,7 @@ public class Move_Controller : MonoBehaviour
     public bool canMoveLeft = false;
     public bool canMoveRight = false;
     public bool canRun = false;
-    public bool canJump = true; // 可以控制是否允许跳跃
+    // public bool canJump = true; // 可以控制是否允许跳跃
     public bool canTeleport = false;
 
     [Header("Teleport Settings")]
@@ -47,21 +47,22 @@ public class Move_Controller : MonoBehaviour
     float velocity_A = 0.0f;
     bool MovePressed;
     bool RunPressed;
-    bool JumpPressed;
+    // bool JumpPressed;
     bool TeleportPressed;
     private Vector3 velocity;
 
     // 跳跃相关变量
-    private float jumpTimeoutDelta;
-    private float fallTimeoutDelta;
-    private bool isJumping = false;
+    // private float jumpTimeoutDelta;
+    // private float fallTimeoutDelta;
+    // private bool isJumping = false;
 
+    //传送相关变量
     private float lastTeleportTime;
     private bool isTeleporting = false;
 
     // Animator 参数哈希
     int VelocityHash;
-    int JumpHash;
+    // int JumpHash;
     int GroundedHash;
 
     void onMovementInput(InputAction.CallbackContext context)
@@ -84,13 +85,13 @@ public class Move_Controller : MonoBehaviour
         }
     }
 
-    void onJumpInput(InputAction.CallbackContext context)
-    {
-        if (canJump) // 只有允许跳跃时才响应
-        {
-            JumpPressed = context.ReadValue<float>() > 0.5f;
-        }
-    }
+    // void onJumpInput(InputAction.CallbackContext context)
+    // {
+    //     if (canJump) // 只有允许跳跃时才响应
+    //     {
+    //         JumpPressed = context.ReadValue<float>() > 0.5f;
+    //     }
+    // }
 
     void onTeleportInput(InputAction.CallbackContext context)
     {
@@ -141,13 +142,13 @@ public class Move_Controller : MonoBehaviour
                 canRun = true;
                 // Debug.Log("解锁奔跑能力!");
                 break;
-            case "jump":
-                canJump = true;
-                // Debug.Log("解锁跳跃能力!");
-                break;
+            // case "jump":
+            //     canJump = true;
+            //     // Debug.Log("解锁跳跃能力!");
+            //     break;
             case "teleport":
                 canTeleport = true;
-                // Debug.Log("解锁奔跑能力!");
+                // Debug.Log("解锁传送能力!");
                 break;
             default:
                 Debug.LogWarning("未知的移动方向: " + direction);
@@ -174,9 +175,9 @@ public class Move_Controller : MonoBehaviour
             case "run":
                 canRun = !canRun;
                 break;
-            case "jump":
-                canJump = !canJump;
-                break;
+            // case "jump":
+            //     canJump = !canJump;
+            //     break;
             case "teleport":
                 canTeleport = !canTeleport;
                 break;
@@ -195,7 +196,8 @@ public class Move_Controller : MonoBehaviour
             case "left": return canMoveLeft;
             case "right": return canMoveRight;
             case "run": return canRun;
-            case "jump": return canJump;
+            // case "jump": return canJump;
+            case "teleport": return canTeleport;
             default: return false;
         }
     }
@@ -394,11 +396,11 @@ void handleRotation()
         animator = GetComponent<Animator>();
 
         VelocityHash = Animator.StringToHash("speed");
-        JumpHash = Animator.StringToHash("isJumping");
+        // JumpHash = Animator.StringToHash("isJumping");
         GroundedHash = Animator.StringToHash("isGrounded");
 
-        jumpTimeoutDelta = jumpTimeout;
-        fallTimeoutDelta = fallTimeout;
+        // jumpTimeoutDelta = jumpTimeout;
+        // fallTimeoutDelta = fallTimeout;
 
         playerInput.player.move.performed += onMovementInput;
         playerInput.player.move.canceled += onMovementInput;
@@ -406,8 +408,8 @@ void handleRotation()
         playerInput.player.run.performed += onRunInput;
         playerInput.player.run.canceled += onRunInput;
 
-        playerInput.player.jump.performed += onJumpInput;
-        playerInput.player.jump.canceled += onJumpInput;
+        // playerInput.player.jump.performed += onJumpInput;
+        // playerInput.player.jump.canceled += onJumpInput;
         
         playerInput.player.run.performed += onTeleportInput;
         playerInput.player.run.canceled += onTeleportInput;

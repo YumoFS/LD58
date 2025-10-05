@@ -37,9 +37,9 @@ public class UI_key_turnOn : MonoBehaviour
                 case 'd':
                     shouldBeOn = moveController.canMoveRight;
                     break;
-                case 'j':
-                    shouldBeOn = moveController.canJump;
-                    break;
+                // case 'j':
+                //     shouldBeOn = moveController.canJump;
+                //     break;
                 case 'r':
                     shouldBeOn = moveController.canRun;
                     break;

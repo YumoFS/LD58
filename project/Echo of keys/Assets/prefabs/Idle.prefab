@@ -145,3 +145,10 @@ MonoBehaviour:
   canMoveRight: 0
   canRun: 0
   canJump: 1
+  canTeleport: 0
+  teleportDistance: 5
+  teleportCooldown: 1
+  teleportLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  teleportEffect: {fileID: 0}

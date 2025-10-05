@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d70d3b53440c4998a20ae95d61e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  directionToUnlock: run
+  directionToUnlock: shift
   destroyAfterTrigger: 1
   visualEffect: {fileID: 0}
 --- !u!65 &7705757782678311493
