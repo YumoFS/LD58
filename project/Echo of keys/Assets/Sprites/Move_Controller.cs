@@ -37,6 +37,9 @@ public class Move_Controller : MonoBehaviour
     public bool haveAdd = false;
     public bool canAdd = false;
     public bool canInteraction = false;
+    public bool haveCopperKey = false;
+    public bool haveSilverKey = false;
+    public bool haveGoldenKey = false;
 
     [Header("Teleport Settings")]
     public float teleportDistance = 10f;
@@ -162,6 +165,15 @@ public class Move_Controller : MonoBehaviour
             case "interaction": 
                 canInteraction = true;
                 break;
+            case "copper": 
+                haveCopperKey = true;
+                break;
+            case "silver": 
+                haveSilverKey = true;
+                break;
+            case "golden": 
+                haveGoldenKey = true;
+                break;
             default:
                 Debug.LogWarning("未知的移动方向: " + direction);
                 break;
@@ -273,6 +285,9 @@ public class Move_Controller : MonoBehaviour
         }
         
         Vector3 rayStart = transform.position - Vector3.up * 0.5f;
+        // Vector3 stoneRayStart = transform.position + Vector3.up * 0.5f;
+
+        // RaycastHit stoneHit = Physics.Raycast(stoneRayStart, teleportDirection, teleportDistance);
         
         // 使用RaycastAll获取所有命中物体
         RaycastHit[] hits = Physics.RaycastAll(rayStart, teleportDirection, teleportDistance, teleportLayerMask);
