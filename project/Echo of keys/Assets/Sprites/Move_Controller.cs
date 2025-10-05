@@ -30,8 +30,9 @@ public class Move_Controller : MonoBehaviour
     public bool canRun = false;
     public bool canTeleport = false;
     public bool canRecall = false; // 新增召回能力
-    public bool canDelete = true;
-    public bool canAdd = true;
+    public bool canDelete = false;
+    public bool canAdd = false;
+    public bool canInteraction = false;
 
     [Header("Teleport Settings")]
     public float teleportDistance = 10f;
@@ -141,8 +142,11 @@ public class Move_Controller : MonoBehaviour
             case "teleport":
                 canTeleport = true;
                 break;
-            case "recall": // 新增召回解锁
+            case "recall": 
                 canRecall = true;
+                break;
+            case "interaction": 
+                canInteraction = true;
                 break;
             default:
                 Debug.LogWarning("未知的移动方向: " + direction);
@@ -191,7 +195,7 @@ public class Move_Controller : MonoBehaviour
             case "right": return canMoveRight;
             case "run": return canRun;
             case "teleport": return canTeleport;
-            case "recall": return canRecall; // 新增召回查询
+            case "recall": return canRecall; 
             default: return false;
         }
     }

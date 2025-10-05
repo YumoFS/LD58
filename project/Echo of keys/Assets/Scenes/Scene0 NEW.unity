@@ -3576,6 +3576,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2381532981373761836, guid: 88216aae25a712548aabfbac8bc26ffb,
+        type: 3}
+      propertyPath: directionToUnlock
+      value: interaction
+      objectReference: {fileID: 0}
     - target: {fileID: 6197278438492400340, guid: 88216aae25a712548aabfbac8bc26ffb,
         type: 3}
       propertyPath: m_Enabled
