@@ -2699,7 +2699,7 @@ PrefabInstance:
     - target: {fileID: 911217560324269555, guid: a5b93d82299f39b41991ccf4a3545be8,
         type: 3}
       propertyPath: teleportDistance
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8259058966600704682, guid: a5b93d82299f39b41991ccf4a3545be8,
         type: 3}
