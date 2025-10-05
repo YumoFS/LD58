@@ -3399,6 +3399,7 @@ GameObject:
   - component: {fileID: 6936165295727376702}
   - component: {fileID: 3598377301637678547}
   - component: {fileID: 7458904332303090494}
+  - component: {fileID: 7458904332303090495}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -3441,6 +3442,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44bfe4e1fc54749da83ecab260742e1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7458904332303090495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4439695678459476595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2445a015baf650419747d87a9e233db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setColor:
+  - {r: 0.8705883, g: 0.9333334, b: 0.97647065, a: 0}
+  - {r: 0.76878214, g: 0.9811321, b: 0.280764, a: 0}
+  - {r: 1, g: 0.73042595, b: 0.3050313, a: 0}
+  - {r: 0.8745099, g: 0.93725497, b: 0.97647065, a: 0}
+  - {r: 1, g: 0.40566027, b: 0.54970765, a: 0}
+  duration: 10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
