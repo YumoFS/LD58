@@ -295,7 +295,7 @@ public class Move_Controller : MonoBehaviour
             if (h.collider.CompareTag("Stone"))
             {
                 Debug.Log("无法传送通过障碍");
-                Instantiate(unableTeleportEffect, transform.position, Quaternion.identity);
+                if (unableTeleportEffect != null) Instantiate(unableTeleportEffect, transform.position, Quaternion.identity);
                 yield break;
             }
         }
