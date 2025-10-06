@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rim_Object
-  m_Shader: {fileID: 4800000, guid: ebfcace25c4db4d089dac41a3075fe09, type: 3}
+  m_Name: S0_oneBlock 1
+  m_Shader: {fileID: 4800000, guid: 4c7706e8b2c7647a89f34a3b631e1f0b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -94,7 +94,6 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _Emiss: 5
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -104,7 +103,6 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RimPower: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -114,14 +112,14 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.6431373, g: 0.7411765, b: 0.72348297, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MainColor: {r: 1, g: 0.6411831, b: 0.27358478, a: 0}
-    - _RimColor: {r: 0.63522005, g: 0.39875126, b: 0, a: 0}
+    - _FrontColor: {r: 0.6431373, g: 0.7411765, b: 0.72156864, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _TopColor: {r: 0.6431373, g: 0.7411765, b: 0.72156864, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &3805611703032101075
+--- !u!114 &5480862744150779143
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
