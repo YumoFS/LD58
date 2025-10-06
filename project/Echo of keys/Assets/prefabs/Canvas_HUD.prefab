@@ -1699,8 +1699,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000030518, y: 0.000012398}
-  m_SizeDelta: {x: 577.356, y: 267.281}
+  m_AnchoredPosition: {x: 9.581, y: 7.843}
+  m_SizeDelta: {x: 869.59, y: 454.128}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8707628341485740463
 CanvasRenderer:
@@ -1737,9 +1737,14 @@ MonoBehaviour:
     Press R to lauch
     skill 2
 
-    Press 1 to switch skill 1
+    Press 1 to switch skill 1:
 
-    Press 2 to switch skill 2
+    -Teleport to nearby, or Recall the
+    position
+
+    Press 2 to switch skill 2:
+
+    -Create or destroy objects by clicking
 
 '
   m_isRightToLeft: 0
