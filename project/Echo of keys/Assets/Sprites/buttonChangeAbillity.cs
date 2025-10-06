@@ -12,13 +12,17 @@ public class buttonChangeAbillity : MonoBehaviour
 
     void Update()
     {
+        if (moveController == null) return;
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             moveController.ChangeMovementDirectionLock("t/r");
+            AudioMng.Instance.PlaySound("equip");
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             moveController.ChangeMovementDirectionLock("d/a");
+            AudioMng.Instance.PlaySound("equip");
         }
     }
 }
