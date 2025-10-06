@@ -316,7 +316,7 @@ public class Move_Controller : MonoBehaviour
         }
         
         Vector3 rayStart = transform.position - Vector3.up * 1.0f;
-        Vector3 stoneRayStart = transform.position + Vector3.up * 0.5f;
+        Vector3 stoneRayStart = transform.position + Vector3.up * 0.5f - teleportDirection * 0.3f;
 
         RaycastHit[] stoneHits = Physics.RaycastAll(stoneRayStart, teleportDirection, teleportDistance, teleportLayerMask);
 
