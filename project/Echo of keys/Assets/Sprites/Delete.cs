@@ -560,7 +560,7 @@ public class ObjectSelector : MonoBehaviour
                 GUI.Label(new Rect(20, 40, 280, 20), "左键点击: 选择物体");
                 GUI.Label(new Rect(20, 60, 280, 20), "右键点击: 删除物体");
                 GUI.Label(new Rect(20, 80, 280, 20), "H 键: 删除物体");
-                GUI.Label(new Rect(20, 100, 280, 20), "Delete 键: 退出模式");
+                GUI.Label(new Rect(20, 100, 280, 20), "R 键: 退出模式");
                 GUI.Label(new Rect(20, 120, 280, 20), $"目标标签: {deletionTag}");
                 GUI.Label(new Rect(20, 140, 280, 20), $"最大距离: {maxDistance}");
                 
@@ -579,8 +579,7 @@ public class ObjectSelector : MonoBehaviour
             {
                 GUI.Box(new Rect(10, 10, 300, 180), "添加模式");
                 GUI.Label(new Rect(20, 40, 280, 20), "左键点击: 放置方块");
-                GUI.Label(new Rect(20, 60, 280, 20), "H 键: 放置方块");
-                GUI.Label(new Rect(20, 80, 280, 20), "Delete 键: 退出模式");
+                GUI.Label(new Rect(20, 80, 280, 20), "R 键: 退出模式");
                 GUI.Label(new Rect(20, 100, 280, 20), "在网格位置生成方块");
                 GUI.Label(new Rect(20, 120, 280, 20), $"最大距离: {maxDistance}");
                 
