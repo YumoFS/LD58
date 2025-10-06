@@ -289,6 +289,8 @@ public class Move_Controller : MonoBehaviour
 
         if (TeleportPressed)
         {
+            AudioMng.Instance.PlaySound("dash");
+
             if (hasRecordedPosition)
             {
                 HandleRecall();
@@ -407,6 +409,8 @@ public class Move_Controller : MonoBehaviour
         // 检查冷却时间
         if (Time.time - lastRecallTime < recallCooldown) return;
         
+        AudioMng.Instance.PlaySound("dash");
+        
         if (!hasRecordedPosition)
         {
             // 检查玩家是否站在Block上
@@ -415,17 +419,17 @@ public class Move_Controller : MonoBehaviour
                 Debug.Log("无法记录位置：玩家必须站在Block上才能记录");
                 return;
             }
-            
+
             // 记录当前位置
             recalledPosition = transform.position;
             hasRecordedPosition = true;
-            
+
             // 播放标记特效
             if (markEffect != null)
             {
                 Instantiate(markEffect, recalledPosition, Quaternion.identity);
             }
-            
+
             Debug.Log("位置已记录: " + recalledPosition);
         }
         else

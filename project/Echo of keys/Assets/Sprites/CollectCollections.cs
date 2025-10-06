@@ -14,6 +14,8 @@ public class CollectCollections : MonoBehaviour
             illustration.SetActive(true);
             // 更新UI或其他逻辑以反映收集状态
 
+            AudioMng.Instance.PlaySound("keyCollect", true);
+
             // 销毁收集物体
             Destroy(gameObject);
         }
