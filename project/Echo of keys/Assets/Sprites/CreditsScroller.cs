@@ -23,6 +23,11 @@ public class CreditsScroller : MonoBehaviour
         [Tooltip("Raised once the credits have finished scrolling and the hold duration has elapsed.")]
         [SerializeField] private UnityEvent onScrollComplete;
 
+        [Header("Scene Transition")]
+        [SerializeField] private string titleSceneName = "Title";
+        [SerializeField] private float sceneTransitionDelay = 3f;
+        [SerializeField] private GameObject[] objectsToActivateAfterTransition;
+
         private RectTransform content;
         private Vector2 initialAnchoredPosition;
         private Coroutine scrollRoutine;
@@ -146,6 +151,16 @@ public class CreditsScroller : MonoBehaviour
         }
 
         onScrollComplete?.Invoke();
+        
+        if (SceneTransitionManager.Instance != null)
+        {
+            SceneTransitionManager.Instance.ScheduleTransitionToTitle(
+                titleSceneName,
+                objectsToActivateAfterTransition,
+                sceneTransitionDelay
+            );
+        }
+
         scrollRoutine = null;
     }
 }
