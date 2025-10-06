@@ -5538,6 +5538,11 @@ PrefabInstance:
       propertyPath: outlineMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 1b8f7a34e10c5324298e27599b21c492, type: 2}
+    - target: {fileID: 7931893292918352505, guid: 0369f4cd53f275748ae1491cf02252ac,
+        type: 3}
+      propertyPath: previewMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 80ccf9d87ccdf614694162bd1657540b, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
