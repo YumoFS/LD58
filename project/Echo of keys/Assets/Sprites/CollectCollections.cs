@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class CollectCollections : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public int levelNum = 1;
+    public GameObject illustration;
+    
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
+        if (other.CompareTag("Player"))
+        {
+            illustration.SetActive(true);
+            // 更新UI或其他逻辑以反映收集状态
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            // 销毁收集物体
+            Destroy(gameObject);
+        }
     }
 }

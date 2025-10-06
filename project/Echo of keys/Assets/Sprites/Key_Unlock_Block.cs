@@ -11,6 +11,9 @@ public class MovementAbilityTrigger : MonoBehaviour
     public bool destroyAfterTrigger = true; // 触发后是否销毁物体
     public GameObject visualEffect;
     public AudioClip soundEffect;
+    [Header("插画收集")]
+    public int levelNum = 1;
+    public GameObject illustration;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -27,7 +30,13 @@ public class MovementAbilityTrigger : MonoBehaviour
                     Instantiate(visualEffect, transform.position, transform.rotation);
                     AudioSource.PlayClipAtPoint(soundEffect, transform.position);
                 }
-                
+
+                // 显示插画
+                if (illustration != null)
+                {
+                    illustration.SetActive(true);
+                }
+
                 // 触发后销毁
                 if (destroyAfterTrigger)
                 {
