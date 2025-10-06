@@ -225,8 +225,8 @@ public class ObjectSelector : MonoBehaviour
         int z = Mathf.RoundToInt((worldPosition.z + 1) / 2f);
         
         // 转换为网格位置 (2x-1, 0, 2z-1)
-        float gridX = 2f * x - 1;
-        float gridZ = 2f * z - 1;
+        float gridX = 2f * x;
+        float gridZ = 2f * z;
         
         return new Vector3(gridX, 0, gridZ);
     }

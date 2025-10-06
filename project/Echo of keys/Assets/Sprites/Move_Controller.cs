@@ -220,6 +220,20 @@ public class Move_Controller : MonoBehaviour
             case "add":
                 if (haveAdd) canAdd = !canAdd;
                 break;
+            case "t/r":
+                if (haveTeleport && haveRecall)
+                {
+                    canTeleport = !canTeleport;
+                    canRecall = !canRecall;
+                }
+                break;
+            case "d/a":
+                if (haveAdd && haveDelete)
+                {
+                    canAdd = !canAdd;
+                    canDelete = !canDelete;
+                }
+                break;
             default:
                 Debug.LogWarning("未知的移动方向: " + direction);
                 break;
@@ -269,10 +283,15 @@ public class Move_Controller : MonoBehaviour
         
         // 检查冷却时间
         if (Time.time - lastTeleportTime < teleportCooldown) return;
-        
+
         if (TeleportPressed)
         {
-            StartCoroutine(PerformTeleport());
+            if (hasRecordedPosition)
+            {
+                HandleRecall();
+            }
+            else
+                StartCoroutine(PerformTeleport());
         }
     }
     
@@ -375,7 +394,7 @@ public class Move_Controller : MonoBehaviour
     // 新增召回功能
     void HandleRecall()
     {
-        if (!canRecall || canTeleport || isRecalling) return;
+        if (!hasRecordedPosition && (!canRecall || canTeleport || isRecalling)) return;
         
         // 检查冷却时间
         if (Time.time - lastRecallTime < recallCooldown) return;
