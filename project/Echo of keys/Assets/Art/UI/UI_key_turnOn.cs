@@ -25,6 +25,7 @@ public class UI_key_turnOn : MonoBehaviour
         {
             switch (keyNum)
             {
+                /*
                 case 'w':
                     shouldBeOn = moveController.canMoveForward;
                     break;
@@ -36,12 +37,24 @@ public class UI_key_turnOn : MonoBehaviour
                     break;
                 case 'd':
                     shouldBeOn = moveController.canMoveRight;
-                    break;
+                    break;*/
                 // case 'j':
                 //     shouldBeOn = moveController.canJump;
                 //     break;
                 case 'r':
                     shouldBeOn = moveController.canRun;
+                    break;
+                case 't':
+                    shouldBeOn = moveController.canTeleport;
+                    break;
+                case 'c':
+                    shouldBeOn = moveController.canRecall;
+                    break;
+                case 'a':
+                    shouldBeOn = moveController.canAdd;
+                    break;
+                case 'd':
+                    shouldBeOn = moveController.canDelete;
                     break;
                 default:
                     Debug.LogWarning("Invalid keyNum: " + keyNum);
