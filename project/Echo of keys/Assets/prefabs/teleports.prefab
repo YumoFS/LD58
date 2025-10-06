@@ -360,8 +360,8 @@ MonoBehaviour:
   player: {fileID: 0}
   playerTag: Player
   targetTransform: {fileID: 0}
-  useManualTargetPosition: 0
-  manualTargetPosition: {x: 0, y: 0, z: 0}
+  useManualTargetPosition: 1
+  manualTargetPosition: {x: 28, y: 1.5, z: 0}
   matchTargetRotation: 0
   allowMultipleTriggers: 1
   reactivationDelay: 0.5
@@ -625,8 +625,8 @@ MonoBehaviour:
   player: {fileID: 0}
   playerTag: Player
   targetTransform: {fileID: 0}
-  useManualTargetPosition: 0
-  manualTargetPosition: {x: 0, y: 0, z: 0}
+  useManualTargetPosition: 1
+  manualTargetPosition: {x: 22, y: 1.5, z: 20}
   matchTargetRotation: 0
   allowMultipleTriggers: 1
   reactivationDelay: 0.5
@@ -1504,7 +1504,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1824210856822652329}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 35.248024, y: 1, z: 45.421223}
   m_ConstrainProportionsScale: 0
@@ -1704,8 +1704,8 @@ MonoBehaviour:
   player: {fileID: 0}
   playerTag: Player
   targetTransform: {fileID: 0}
-  useManualTargetPosition: 0
-  manualTargetPosition: {x: 0, y: 0, z: 0}
+  useManualTargetPosition: 1
+  manualTargetPosition: {x: 22, y: 1.5, z: 72}
   matchTargetRotation: 0
   allowMultipleTriggers: 1
   reactivationDelay: 0.5
@@ -3264,8 +3264,8 @@ MonoBehaviour:
   player: {fileID: 0}
   playerTag: Player
   targetTransform: {fileID: 0}
-  useManualTargetPosition: 0
-  manualTargetPosition: {x: 0, y: 0, z: 0}
+  useManualTargetPosition: 1
+  manualTargetPosition: {x: 28, y: 1.5, z: 52}
   matchTargetRotation: 0
   allowMultipleTriggers: 1
   reactivationDelay: 0.5
