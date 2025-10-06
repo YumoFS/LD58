@@ -24317,7 +24317,7 @@ PrefabInstance:
     - target: {fileID: 2038713814378342665, guid: b1fa41270e5601d43ad356b97d3e75d0,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4602731502281139622, guid: b1fa41270e5601d43ad356b97d3e75d0,
         type: 3}
@@ -24596,7 +24596,11 @@ PrefabInstance:
     - target: {fileID: 3281807509703956807, guid: 47845f86c1b406c4e8ef7cc8f13e9404,
         type: 3}
       propertyPath: m_IsActive
+<<<<<<< Updated upstream
       value: 0
+=======
+      value: 1
+>>>>>>> Stashed changes
       objectReference: {fileID: 0}
     - target: {fileID: 3459064145643282944, guid: 47845f86c1b406c4e8ef7cc8f13e9404,
         type: 3}
@@ -24647,6 +24651,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858559321237618686, guid: 47845f86c1b406c4e8ef7cc8f13e9404,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 5224830935207662999, guid: 47845f86c1b406c4e8ef7cc8f13e9404,
         type: 3}
