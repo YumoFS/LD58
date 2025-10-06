@@ -151,18 +151,22 @@ public class Move_Controller : MonoBehaviour
             case "teleport":
                 haveTeleport = true;
                 canTeleport = true;
+                canRecall = false;
                 break;
             case "recall": 
                 canRecall = true;
                 haveRecall = true;
+                canTeleport = false;
                 break;
             case "delete":
                 haveDelete = true;
                 canDelete = true;
+                canAdd = false;
                 break;
             case "add": 
                 canAdd = true;
                 haveAdd = true;
+                canDelete = false;
                 break;
             case "interaction": 
                 canInteraction = true;
