@@ -61,6 +61,8 @@ public class LevelExitTrigger : MonoBehaviour
 
         hasTriggered = true;
 
+        AudioMng.Instance.PlaySound("endGame");
+
         if (completionUI != null)
         {
             completionUI.SetActive(true);
