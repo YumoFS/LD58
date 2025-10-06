@@ -495,6 +495,7 @@ MonoBehaviour:
   moveController: {fileID: 0}
   onImage: {fileID: 21300000, guid: 35731854a91ecf242b8c16a1d8b95e03, type: 3}
   offImage: {fileID: 21300000, guid: c2fa8af5d13bd7b478f362515ed23161, type: 3}
+  haveImage: {fileID: 21300000, guid: 91593d538dd2da94fb74d01cffc88168, type: 3}
 --- !u!1 &4374381469374615973
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,6 +589,7 @@ MonoBehaviour:
   moveController: {fileID: 0}
   onImage: {fileID: 21300000, guid: 004a2a2799cc0204eb46643614f772f6, type: 3}
   offImage: {fileID: 21300000, guid: fef00434261fa5943abc31a5322db81d, type: 3}
+  haveImage: {fileID: 21300000, guid: d263485f2086d9e46b89f723f64a7b00, type: 3}
 --- !u!1 &4514643492653968584
 GameObject:
   m_ObjectHideFlags: 0
@@ -1294,6 +1296,7 @@ MonoBehaviour:
   moveController: {fileID: 0}
   onImage: {fileID: 21300000, guid: 7a19c55a51d31f84e80f797abe89c16c, type: 3}
   offImage: {fileID: 21300000, guid: e8ddbc746212e404b9715c74cda86003, type: 3}
+  haveImage: {fileID: 21300000, guid: 4dc8d67a22011e344a88e3b3f9a4aa81, type: 3}
 --- !u!1 &7791194032463394360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1852,3 +1855,4 @@ MonoBehaviour:
   moveController: {fileID: 0}
   onImage: {fileID: 21300000, guid: 35fc4da9677ce0e46961d0ca41277676, type: 3}
   offImage: {fileID: 21300000, guid: eac35029c888be64894e14e0bc26f465, type: 3}
+  haveImage: {fileID: 21300000, guid: 90b95cbf2b5f7614db8d7844938a761a, type: 3}

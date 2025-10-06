@@ -9,6 +9,7 @@ public class UI_key_turnOn : MonoBehaviour
     public Move_Controller moveController;
     public Sprite onImage;
     public Sprite offImage;
+    public Sprite haveImage = null;
     //GameObject gameObject = GetComponent<GameObject>();
 
     // Start is called before the first frame update
@@ -21,11 +22,12 @@ public class UI_key_turnOn : MonoBehaviour
     void Update()
     {
         bool shouldBeOn = false;
+        bool have = false;
         if (moveController != null)
         {
             switch (keyNum)
             {
-                
+
                 case 'W':
                     shouldBeOn = moveController.canMoveForward;
                     break;
@@ -46,15 +48,19 @@ public class UI_key_turnOn : MonoBehaviour
                     break;
                 case 't':
                     shouldBeOn = moveController.canTeleport;
+                    have = moveController.haveTeleport;
                     break;
                 case 'c':
                     shouldBeOn = moveController.canRecall;
+                    have = moveController.haveRecall;
                     break;
                 case 'a':
                     shouldBeOn = moveController.canAdd;
+                    have = moveController.haveAdd;
                     break;
                 case 'd':
                     shouldBeOn = moveController.canDelete;
+                    have = moveController.haveDelete;
                     break;
                 default:
                     Debug.LogWarning("Invalid keyNum: " + keyNum);
@@ -64,6 +70,10 @@ public class UI_key_turnOn : MonoBehaviour
             {
                 isOn = shouldBeOn;
                 gameObject.GetComponent<UnityEngine.UI.Image>().sprite = isOn ? onImage : offImage;
+            }
+            else if (have != false && haveImage != null && isOn == false)
+            {
+                gameObject.GetComponent<UnityEngine.UI.Image>().sprite = haveImage;
             }
         }
     }
