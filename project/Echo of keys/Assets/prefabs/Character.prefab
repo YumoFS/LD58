@@ -21,22 +21,22 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 5d6efaf5e46cb4d2189307f1c8512121,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.7
+      value: 0.70000005
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d6efaf5e46cb4d2189307f1c8512121,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d6efaf5e46cb4d2189307f1c8512121,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.56
+      value: 1.33
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d6efaf5e46cb4d2189307f1c8512121,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -23
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d6efaf5e46cb4d2189307f1c8512121,
         type: 3}
@@ -46,17 +46,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 5d6efaf5e46cb4d2189307f1c8512121,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d6efaf5e46cb4d2189307f1c8512121,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d6efaf5e46cb4d2189307f1c8512121,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d6efaf5e46cb4d2189307f1c8512121,
         type: 3}
@@ -103,6 +103,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5d6efaf5e46cb4d2189307f1c8512121,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 4935366545870724983}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5d6efaf5e46cb4d2189307f1c8512121,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 7931893292918352505}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5d6efaf5e46cb4d2189307f1c8512121,
         type: 3}
@@ -134,9 +138,9 @@ MonoBehaviour:
   acceleration: 0.8
   deceleration: 0.8
   canMoveForward: 1
-  canMoveBackward: 0
-  canMoveLeft: 0
-  canMoveRight: 0
+  canMoveBackward: 1
+  canMoveLeft: 1
+  canMoveRight: 1
   canRun: 0
   haveTeleport: 0
   canTeleport: 0
@@ -151,7 +155,7 @@ MonoBehaviour:
   haveCopperKey: 0
   haveSilverKey: 0
   haveGoldenKey: 0
-  teleportDistance: 10
+  teleportDistance: 5
   teleportCooldown: 1
   teleportLayerMask:
     serializedVersion: 2
@@ -187,6 +191,18 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!114 &4935366545870724983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3052550467243079274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4c46ba09f0e25f4eb80512b91772ba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7931893292918352505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a98da49e6d13e454281e7efd9ca98c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 0}
+  outlineMaterial: {fileID: 2100000, guid: 1b8f7a34e10c5324298e27599b21c492, type: 2}
   deleteModeColor: {r: 1, g: 0, b: 0, a: 1}
   addModeColor: {r: 0, g: 1, b: 0, a: 1}
   outlineWidth: 0.05
@@ -209,15 +225,7 @@ MonoBehaviour:
     type: 3}
   ignoreTag: AirWall
   blockLifetimeAfterExit: 3
---- !u!114 &6132004758506013644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3052550467243079274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94d514158c8e28d4ca7aaa280ead0ac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  airWallPrefabX: {fileID: 9004942752889133137, guid: 7c6c93782a8409e4a9b76ebc0366aa52,
+    type: 3}
+  airWallPrefabZ: {fileID: 11157853417393288, guid: 21ba0fc21bf0335419388e9934b29ea1,
+    type: 3}

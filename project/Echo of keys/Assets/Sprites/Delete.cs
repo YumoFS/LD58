@@ -18,6 +18,10 @@ public class ObjectSelector : MonoBehaviour
     
     [Header("Add Mode Settings")]
     public float blockLifetimeAfterExit = 3f; // 玩家离开后方块保持的时间
+
+    [Header("Air Wall Settings")]
+    public GameObject airWallPrefabX; // 空气墙预制体
+    public GameObject airWallPrefabZ; // 空气墙预制体
     
     private Move_Controller moveController;
     private bool selectionMode = false;
@@ -221,14 +225,10 @@ public class ObjectSelector : MonoBehaviour
     Vector3 CalculateGridPosition(Vector3 worldPosition)
     {
         // 计算最近的网格坐标
-        int x = Mathf.RoundToInt((worldPosition.x + 1) / 2f);
-        int z = Mathf.RoundToInt((worldPosition.z + 1) / 2f);
+        int x = Mathf.RoundToInt((worldPosition.x) / 2f) * 2;
+        int z = Mathf.RoundToInt((worldPosition.z) / 2f) * 2;
         
-        // 转换为网格位置 (2x-1, 0, 2z-1)
-        float gridX = 2f * x;
-        float gridZ = 2f * z;
-        
-        return new Vector3(gridX, 0, gridZ);
+        return new Vector3(x, 0, z);
     }
     
     // 在网格位置放置方块
@@ -324,9 +324,14 @@ public class ObjectSelector : MonoBehaviour
         // 时间到，销毁方块
         if (currentAddedBlock != null)
         {
+            Vector3 blockPosition = currentAddedBlock.transform.position;
+
             Debug.Log($"方块存在时间结束，已销毁");
             Destroy(currentAddedBlock);
             createdBlocks.Remove(currentAddedBlock);
+
+            SpawnAirWalls(blockPosition);
+            
             currentAddedBlock = null;
             canAddNewBlock = true;
         }
@@ -334,6 +339,50 @@ public class ObjectSelector : MonoBehaviour
         blockLifetimeCoroutine = null;
     }
     
+    void SpawnAirWalls(Vector3 centerPosition)
+    {
+        if (airWallPrefabX == null || airWallPrefabZ == null)
+        {
+            Debug.LogWarning("未分配空气墙预制体，无法生成空气墙");
+            return;
+        }
+        
+        // 四个方向：前、后、左、右
+        Vector3[] directions = {
+            Vector3.forward * 0.9f,   // 前方
+            Vector3.back * 0.9f,      // 后方
+            Vector3.left * 0.9f,      // 左方
+            Vector3.right * 0.9f      // 右方
+        };
+
+        Quaternion yRotation90 = Quaternion.Euler(0, 90, 0);
+        
+        List<GameObject> spawnedAirWalls = new List<GameObject>();
+
+        // 在每个方向生成空气墙
+        foreach (Vector3 direction in directions)
+        {
+            Vector3 spawnPosition = centerPosition + direction;
+            spawnPosition.y += 1;
+
+            if (direction == Vector3.forward * 0.9f || direction == Vector3.back * 0.9f)
+            {
+                GameObject airWall = Instantiate(airWallPrefabX, spawnPosition, yRotation90);
+                airWall.name = "AirWall";
+                spawnedAirWalls.Add(airWall);
+            }
+            else
+            {
+                GameObject airWall = Instantiate(airWallPrefabZ, spawnPosition, Quaternion.identity);
+                airWall.name = "AirWall";
+                spawnedAirWalls.Add(airWall);
+            }
+            
+            // Debug.Log($"在位置 {spawnPosition} 生成了空气墙");
+        }
+        
+    }
+
     // 检查位置是否已被占用
     bool IsPositionOccupied(Vector3 position)
     {

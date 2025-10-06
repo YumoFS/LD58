@@ -8,6 +8,7 @@ TagManager:
   - Stone
   - Block
   - hiddenBlock
+  - door
   layers:
   - Default
   - TransparentFX

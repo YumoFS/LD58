@@ -323,7 +323,7 @@ public class Move_Controller : MonoBehaviour
         bool isHitStone = false; 
         foreach (RaycastHit h in stoneHits)
         {
-            if (h.collider.CompareTag("Stone"))
+            if (h.collider.CompareTag("Stone") || h.collider.CompareTag("door"))
             {
                 Debug.Log("无法传送通过障碍");
                 if (unableTeleportEffect != null) Instantiate(unableTeleportEffect, transform.position, Quaternion.identity);
