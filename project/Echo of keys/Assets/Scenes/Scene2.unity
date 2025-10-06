@@ -9291,6 +9291,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: checkpoint
       objectReference: {fileID: 0}
+    - target: {fileID: 2248562285761602829, guid: b1fa41270e5601d43ad356b97d3e75d0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4602731502281139622, guid: b1fa41270e5601d43ad356b97d3e75d0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9309,12 +9314,12 @@ PrefabInstance:
     - target: {fileID: 4602731502281139622, guid: b1fa41270e5601d43ad356b97d3e75d0,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99999964
       objectReference: {fileID: 0}
     - target: {fileID: 4602731502281139622, guid: b1fa41270e5601d43ad356b97d3e75d0,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.0008457303
       objectReference: {fileID: 0}
     - target: {fileID: 4602731502281139622, guid: b1fa41270e5601d43ad356b97d3e75d0,
         type: 3}
@@ -9329,7 +9334,7 @@ PrefabInstance:
     - target: {fileID: 4602731502281139622, guid: b1fa41270e5601d43ad356b97d3e75d0,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 0.097
       objectReference: {fileID: 0}
     - target: {fileID: 4602731502281139622, guid: b1fa41270e5601d43ad356b97d3e75d0,
         type: 3}
