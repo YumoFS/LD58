@@ -370,9 +370,9 @@ public class Move_Controller : MonoBehaviour
                 Debug.Log("前方没有可传送的方块");
             }
 
-            lastTeleportTime = Time.time;
-            isTeleporting = false;
         }
+        lastTeleportTime = Time.time;
+        isTeleporting = false;
     }
 
     // 检查玩家脚下是否为Block
