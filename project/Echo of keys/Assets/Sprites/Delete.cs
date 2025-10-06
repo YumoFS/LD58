@@ -10,6 +10,7 @@ public class ObjectSelector : MonoBehaviour
     public Color addModeColor = Color.green; // 添加模式边框颜色
     public float outlineWidth = 0.05f; // 边框宽度
     public float maxDistance = 6f; // 最大操作距离
+    public float maxAddDistance = 2.5f;
     
     [Header("Object Settings")]
     public string deletionTag = "Stone"; // 删除模式下可删除的标签
@@ -322,9 +323,9 @@ public class ObjectSelector : MonoBehaviour
         {
             // 检查距离是否在允许范围内
             float distance = Vector3.Distance(transform.position, selectedObject.transform.position);
-            if (distance > maxDistance)
+            if (distance > maxAddDistance)
             {
-                Debug.Log($"物体距离太远 ({distance:F1} > {maxDistance})，无法删除");
+                Debug.Log($"物体距离太远 ({distance:F1} > {maxAddDistance})，无法删除");
                 StartCoroutine(FlashOutlineColor(Color.yellow, 0.5f));
                 return;
             }
@@ -360,7 +361,7 @@ public class ObjectSelector : MonoBehaviour
             
             // 检查距离是否在允许范围内
             float distance = Vector3.Distance(transform.position, gridPosition);
-            isPositionValid = distance <= maxDistance;
+            isPositionValid = distance <= maxAddDistance;
             
             // 在Scene视图中显示位置（调试用）
             Debug.DrawRay(gridPosition, Vector3.up * 2, isPositionValid ? Color.green : Color.red);
@@ -394,9 +395,9 @@ public class ObjectSelector : MonoBehaviour
         
         // 检查距离是否在允许范围内
         float distance = Vector3.Distance(transform.position, previewPosition);
-        if (distance > maxDistance)
+        if (distance > maxAddDistance)
         {
-            Debug.Log($"放置位置距离太远 ({distance:F1} > {maxDistance})，无法放置");
+            Debug.Log($"放置位置距离太远 ({distance:F1} > {maxAddDistance})，无法放置");
             StartCoroutine(FlashOutlineColor(Color.yellow, 0.5f));
             return;
         }
