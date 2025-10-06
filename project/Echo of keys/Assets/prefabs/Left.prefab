@@ -238,6 +238,9 @@ MonoBehaviour:
   directionToUnlock: left
   destroyAfterTrigger: 1
   visualEffect: {fileID: 0}
+  soundEffect: {fileID: 0}
+  levelNum: 1
+  illustration: {fileID: 0}
 --- !u!65 &64082328891869672
 BoxCollider:
   m_ObjectHideFlags: 0

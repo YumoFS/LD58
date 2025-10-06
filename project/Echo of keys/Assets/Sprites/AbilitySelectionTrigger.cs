@@ -24,6 +24,11 @@ public class AbilitySelectionTrigger : MonoBehaviour
     [Tooltip("Invoked after the player finalises both choices.")]
     [SerializeField] private UnityEvent onSelectionCompleted;
 
+    [Tooltip("是否允许玩家在这个触发器区域内切换技能")]
+    [SerializeField] private bool allowAbilitySwitching = true;
+    
+    private Move_Controller currentPlayerController;
+
     private Collider triggerCollider;
     private bool selectionInProgress;
     private bool hasCompletedOnce;
@@ -76,9 +81,29 @@ public class AbilitySelectionTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        // Debug.Log("触发离开");
+        NotifySelectionFinished();
+
         if (hideUIOnStart && !selectionInProgress && IsPlayer(other.gameObject))
         {
             abilityChoiceUI.HideInstantly();
+        }
+        // Debug.Log("触发离开1");
+        
+        // 新增：玩家离开时禁用技能切换
+        if (IsPlayer(other.gameObject) && !selectionInProgress)
+        {
+            // Debug.Log("触发离开2");
+            Move_Controller controller = other.GetComponent<Move_Controller>();
+            if (controller == null)
+            {
+                controller = player != null ? player.GetComponent<Move_Controller>() : null;
+            }
+            
+            if (controller != null)
+            {
+                controller.SetAbilitySwitching(false);
+            }
         }
     }
 
@@ -90,8 +115,17 @@ public class AbilitySelectionTrigger : MonoBehaviour
             controller = player != null ? player.GetComponent<Move_Controller>() : null;
         }
 
+        // 保存当前玩家控制器引用
+        currentPlayerController = controller;
+        
+        // 允许技能切换
+        if (controller != null && allowAbilitySwitching)
+        {
+            controller.SetAbilitySwitching(true);
+        }
+
         selectionInProgress = true;
-        triggerCollider.enabled = false;
+        // triggerCollider.enabled = false;
         onSelectionStarted?.Invoke();
 
         abilityChoiceUI.OpenForSelection(this, controller);
@@ -107,6 +141,13 @@ public class AbilitySelectionTrigger : MonoBehaviour
         selectionInProgress = false;
         hasCompletedOnce = true;
         onSelectionCompleted?.Invoke();
+
+        // 禁用技能切换
+        if (currentPlayerController != null)
+        {
+            currentPlayerController.SetAbilitySwitching(false);
+            currentPlayerController = null;
+        }
 
         if (allowRepeatSelection && triggerCollider != null)
         {
@@ -129,6 +170,14 @@ public class AbilitySelectionTrigger : MonoBehaviour
     {
         hasCompletedOnce = false;
         selectionInProgress = false;
+        
+        // 确保禁用技能切换
+        if (currentPlayerController != null)
+        {
+            currentPlayerController.SetAbilitySwitching(false);
+            currentPlayerController = null;
+        }
+        
         if (triggerCollider != null)
         {
             triggerCollider.enabled = true;
@@ -139,6 +188,8 @@ public class AbilitySelectionTrigger : MonoBehaviour
             abilityChoiceUI.HideInstantly();
         }
     }
+
+
 
     private bool IsPlayer(GameObject candidate)
     {

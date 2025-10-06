@@ -45,15 +45,18 @@ public class Move_Controller : MonoBehaviour
 
     [Header("Teleport Settings")]
     public float teleportDistance = 5f;
-    public float teleportCooldown = 1f;
+    public float teleportCooldown = 0.3f;
     public LayerMask teleportLayerMask = 1;
     public GameObject teleportEffect;
     public GameObject unableTeleportEffect;
 
     [Header("Recall Settings")] // 新增召回设置
-    public float recallCooldown = 2f;
+    public float recallCooldown = 0.5f;
     public GameObject recallEffect;
     public GameObject markEffect; // 标记位置的特效
+
+    [Header("Ability Switching")]
+    public bool canSwitchAbilities = false; // 新增：是否允许切换技能
 
     Vector2 currentMoveInput;
     Vector3 currentMove;
@@ -76,6 +79,11 @@ public class Move_Controller : MonoBehaviour
     // Animator 参数哈希
     int VelocityHash;
     int GroundedHash;
+
+    public void SetAbilitySwitching(bool allow)
+    {
+        canSwitchAbilities = allow;
+    }
 
     void onMovementInput(InputAction.CallbackContext context)
     {
@@ -192,6 +200,12 @@ public class Move_Controller : MonoBehaviour
 
     public void ChangeMovementDirectionLock(string direction)
     {
+        if (!canSwitchAbilities && (direction == "t/r" || direction == "d/a"))
+        {
+            Debug.Log("无法切换技能：不在能力选择区域");
+            return;
+        }
+
         switch (direction.ToLower())
         {
             case "forward":
