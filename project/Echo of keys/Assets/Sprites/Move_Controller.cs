@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -312,61 +313,66 @@ public class Move_Controller : MonoBehaviour
             teleportDirection = new Vector3(0, 0, Mathf.Sign(teleportDirection.z));
         }
         
-        Vector3 rayStart = transform.position - Vector3.up * 0.5f;
+        Vector3 rayStart = transform.position - Vector3.up * 1.0f;
         Vector3 stoneRayStart = transform.position + Vector3.up * 0.5f;
 
         RaycastHit[] stoneHits = Physics.RaycastAll(stoneRayStart, teleportDirection, teleportDistance, teleportLayerMask);
 
+        bool isHitStone = false; 
         foreach (RaycastHit h in stoneHits)
         {
             if (h.collider.CompareTag("Stone"))
             {
                 Debug.Log("无法传送通过障碍");
                 if (unableTeleportEffect != null) Instantiate(unableTeleportEffect, transform.position, Quaternion.identity);
-                yield break;
+                // yield break;
+                isHitStone = true;
             }
         }
         
+        if (!isHitStone)
+        {
         // 使用RaycastAll获取所有命中物体
-        RaycastHit[] hits = Physics.RaycastAll(rayStart, teleportDirection, teleportDistance, teleportLayerMask);
-        
-        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
-        
-        // 找到第一个不是AirWall的物体
-        RaycastHit? validHit = null;
-        foreach (RaycastHit h in hits)
-        {
-            if (!h.collider.CompareTag("AirWall"))
+            RaycastHit[] hits = Physics.RaycastAll(rayStart, teleportDirection, teleportDistance, teleportLayerMask);
+
+            System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+            // 找到第一个不是AirWall的物体
+            RaycastHit? validHit = null;
+            foreach (RaycastHit h in hits)
             {
-                validHit = h;
-                break;
+                if (!h.collider.CompareTag("AirWall"))
+                {
+                    validHit = h;
+                    break;
+                }
             }
+
+            if (validHit.HasValue)
+            {
+                RaycastHit hit = validHit.Value;
+
+                Vector3 targetPosition = hit.point;
+
+                targetPosition.y = hit.collider.bounds.max.y;
+                targetPosition += teleportDirection;
+
+                yield return new WaitForSeconds(0.1f);
+
+                characterController.enabled = false;
+                transform.position = targetPosition;
+                characterController.enabled = true;
+
+                Debug.Log("传送到位置: " + targetPosition + "\n传送物体名称: " + hit.collider.tag);
+            }
+            else
+            {
+                Debug.Log("前方没有可传送的方块");
+            }
+
+            lastTeleportTime = Time.time;
+            isTeleporting = false;
         }
-        
-        if (validHit.HasValue)
-        {
-            RaycastHit hit = validHit.Value;
-            
-            Vector3 targetPosition = hit.point;
-            
-            targetPosition.y = hit.collider.bounds.max.y;
-            targetPosition += teleportDirection;
-            
-            yield return new WaitForSeconds(0.1f);
-            
-            characterController.enabled = false;
-            transform.position = targetPosition;
-            characterController.enabled = true;
-            
-            Debug.Log("传送到位置: " + targetPosition + "\n传送物体名称: " + hit.collider.tag);
-        }
-        else
-        {
-            Debug.Log("前方没有可传送的方块");
-        }
-        
-        lastTeleportTime = Time.time;
-        isTeleporting = false;
     }
 
     // 检查玩家脚下是否为Block
