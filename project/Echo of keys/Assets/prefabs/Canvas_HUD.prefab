@@ -474,6 +474,7 @@ GameObject:
   - component: {fileID: 6449260376232469944}
   - component: {fileID: 7906940543649311321}
   - component: {fileID: 5044639295004028587}
+  - component: {fileID: 3507365992925397079}
   m_Layer: 5
   m_Name: ilu0_a
   m_TagString: Untagged
@@ -538,6 +539,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3507365992925397079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3118574882963008666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e257a5463a9e0743a9b843b3f86ff75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimationSpeed: 4
 --- !u!1 &4005382869268040074
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,6 +826,7 @@ GameObject:
   - component: {fileID: 7857977649331434724}
   - component: {fileID: 7969436292134866018}
   - component: {fileID: 8137805099618888882}
+  - component: {fileID: 2908517489314485897}
   m_Layer: 5
   m_Name: ilu0_s
   m_TagString: Untagged
@@ -876,6 +891,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2908517489314485897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4514643492653968584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e257a5463a9e0743a9b843b3f86ff75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimationSpeed: 4
 --- !u!1 &5141695397712158474
 GameObject:
   m_ObjectHideFlags: 0
@@ -887,6 +915,7 @@ GameObject:
   - component: {fileID: 5625469884849471863}
   - component: {fileID: 3860678160156882787}
   - component: {fileID: 4316945137511446345}
+  - component: {fileID: 5203571893274371192}
   m_Layer: 5
   m_Name: ilu0_d
   m_TagString: Untagged
@@ -951,6 +980,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5203571893274371192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5141695397712158474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e257a5463a9e0743a9b843b3f86ff75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimationSpeed: 4
 --- !u!1 &5649694230641808716
 GameObject:
   m_ObjectHideFlags: 0

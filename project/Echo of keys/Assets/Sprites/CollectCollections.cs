@@ -11,6 +11,7 @@ public class CollectCollections : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (!illustration.GetComponent<PuzzlePutVFX>()) illustration.AddComponent<PuzzlePutVFX>();
             illustration.SetActive(true);
             // 更新UI或其他逻辑以反映收集状态
 
