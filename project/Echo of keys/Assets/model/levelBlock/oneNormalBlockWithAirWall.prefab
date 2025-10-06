@@ -818,6 +818,21 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3105218182522064317, guid: 7c6c93782a8409e4a9b76ebc0366aa52,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3105218182522064317, guid: 7c6c93782a8409e4a9b76ebc0366aa52,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.6666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 3105218182522064317, guid: 7c6c93782a8409e4a9b76ebc0366aa52,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98999995
+      objectReference: {fileID: 0}
+    - target: {fileID: 3105218182522064317, guid: 7c6c93782a8409e4a9b76ebc0366aa52,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.55
       objectReference: {fileID: 0}
@@ -894,6 +909,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AirWall+z
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325214172741556580, guid: 21ba0fc21bf0335419388e9934b29ea1,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325214172741556580, guid: 21ba0fc21bf0335419388e9934b29ea1,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.6666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325214172741556580, guid: 21ba0fc21bf0335419388e9934b29ea1,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98999995
       objectReference: {fileID: 0}
     - target: {fileID: 6325214172741556580, guid: 21ba0fc21bf0335419388e9934b29ea1,
         type: 3}
