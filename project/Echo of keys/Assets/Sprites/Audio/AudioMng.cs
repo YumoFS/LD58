@@ -34,10 +34,22 @@ public class AudioMng : MonoBehaviour
             audioSource.Play();
         }
     }
-    public void PlaySound(string name, float volume = 1)
+    public void PlaySound(string name, bool useRandom = false)
     {
         AudioClip audioClip = Resources.Load<AudioClip>(name);
         audioClip.LoadAudioData();
+        if (useRandom)
+        {
+            sfxSource.pitch = pitchOffsets[idx++];
+            if (idx == pitchOffsets.Length)
+            {
+                idx = 0;
+            }
+        }
+        else
+        {
+            sfxSource.pitch = 1;
+        }
         sfxSource.PlayOneShot(audioClip);
     }
     private AudioClip footstep;
