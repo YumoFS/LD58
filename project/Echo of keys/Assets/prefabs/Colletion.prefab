@@ -115,13 +115,14 @@ GameObject:
   m_Component:
   - component: {fileID: 2388485490129511937}
   - component: {fileID: 6971299525642156543}
+  - component: {fileID: 5896049925288775588}
   m_Layer: 0
   m_Name: Colletion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2388485490129511937
 Transform:
   m_ObjectHideFlags: 0
@@ -159,3 +160,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &5896049925288775588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5748045102699868713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 967279518761d4e44926f2919b7269dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
