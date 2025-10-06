@@ -25,19 +25,19 @@ public class UI_key_turnOn : MonoBehaviour
         {
             switch (keyNum)
             {
-                /*
-                case 'w':
+                
+                case 'W':
                     shouldBeOn = moveController.canMoveForward;
                     break;
-                case 's':
+                case 'S':
                     shouldBeOn = moveController.canMoveBackward;
                     break;
-                case 'a':
+                case 'A':
                     shouldBeOn = moveController.canMoveLeft;
                     break;
-                case 'd':
+                case 'D':
                     shouldBeOn = moveController.canMoveRight;
-                    break;*/
+                    break;
                 // case 'j':
                 //     shouldBeOn = moveController.canJump;
                 //     break;
