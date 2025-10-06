@@ -18,6 +18,15 @@ public class ObjectSelector : MonoBehaviour
     
     [Header("Add Mode Settings")]
     public float blockLifetimeAfterExit = 3f; // 玩家离开后方块保持的时间
+    
+    [Header("Delete Mode Settings")]
+    public float deleteDelay = 0.1f; // 删除延迟时间
+    
+    [Header("Preview Settings")]
+    public Material previewMaterial; // 预览框材质
+    public Color validPositionColor = Color.green; // 有效位置颜色
+    public Color invalidPositionColor = Color.red; // 无效位置颜色
+
 
     [Header("Air Wall Settings")]
     public GameObject airWallPrefabX; // 空气墙预制体
@@ -34,6 +43,11 @@ public class ObjectSelector : MonoBehaviour
     private GameObject currentAddedBlock; // 当前添加的方块
     private bool canAddNewBlock = true; // 是否可以添加新方块
     private Coroutine blockLifetimeCoroutine; // 方块生命周期协程
+    private Coroutine deleteCoroutine; // 删除协程
+    
+    // 预览相关变量
+    private GameObject previewObject; // 预览对象
+    private Renderer previewRenderer; // 预览渲染器
     
     void Start()
     {
@@ -54,6 +68,42 @@ public class ObjectSelector : MonoBehaviour
         {
             Debug.LogWarning("请为ObjectSelector脚本分配边框材质");
         }
+        
+        // 创建预览对象
+        CreatePreviewObject();
+    }
+    
+    // 创建预览对象
+    void CreatePreviewObject()
+    {
+        if (createdBlockPrefab != null)
+        {
+            // 基于要创建的方块预制体创建预览对象
+            previewObject = Instantiate(createdBlockPrefab);
+            previewObject.name = "BlockPreview";
+            
+            // 移除预览对象的碰撞体，避免影响游戏物理
+            Collider previewCollider = previewObject.GetComponent<Collider>();
+            if (previewCollider != null)
+            {
+                previewCollider.enabled = false;
+            }
+            
+            // 获取渲染器并设置预览材质
+            previewRenderer = previewObject.GetComponent<Renderer>();
+            if (previewRenderer != null && previewMaterial != null)
+            {
+                previewRenderer.material = new Material(previewMaterial);
+                previewRenderer.material.color = validPositionColor;
+            }
+            
+            // 初始时隐藏预览对象
+            previewObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("未设置createdBlockPrefab，无法创建预览对象");
+        }
     }
     
     void Update()
@@ -72,6 +122,9 @@ public class ObjectSelector : MonoBehaviour
         
         // 检查当前方块是否需要消失
         CheckCurrentBlockStatus();
+        
+        // 更新预览显示
+        UpdatePreview();
     }
     
     bool CanEnterSelectionMode()
@@ -91,26 +144,31 @@ public class ObjectSelector : MonoBehaviour
             string modeName = moveController.canDelete ? "删除" : "添加";
             Debug.Log($"进入{modeName}模式");
             
-            // Cursor.lockState = CursorLockMode.None; // 解锁鼠标
-            // Cursor.visible = true; // 显示鼠标
-            
-            // // 禁用玩家移动
-            // DisablePlayerMovement();
-            
             // 更新边框颜色
             UpdateOutlineColor();
+            
+            // 如果是添加模式，显示预览
+            if (moveController.canAdd)
+            {
+                ShowPreview(true);
+            }
         }
         else
         {
             Debug.Log("退出选择模式");
-            // Cursor.lockState = CursorLockMode.Locked; // 锁定鼠标到屏幕中心
-            // Cursor.visible = false; // 隐藏鼠标
-            
-            // // 启用玩家移动
-            // EnablePlayerMovement();
             
             // 清除选择
             ClearSelection();
+            
+            // 停止删除协程
+            if (deleteCoroutine != null)
+            {
+                StopCoroutine(deleteCoroutine);
+                deleteCoroutine = null;
+            }
+            
+            // 隐藏预览
+            ShowPreview(false);
         }
     }
     
@@ -137,11 +195,19 @@ public class ObjectSelector : MonoBehaviour
                     float distance = Vector3.Distance(transform.position, hitObject.transform.position);
                     if (distance <= maxDistance)
                     {
-                        // 清除之前的选择
+                        // 清除之前的选择和删除协程
                         ClearSelection();
+                        if (deleteCoroutine != null)
+                        {
+                            StopCoroutine(deleteCoroutine);
+                            deleteCoroutine = null;
+                        }
                         
                         // 设置新的选择
                         SelectObject(hitObject);
+                        
+                        // 启动删除协程
+                        deleteCoroutine = StartCoroutine(DeleteAfterDelay());
                     }
                     else
                     {
@@ -162,16 +228,10 @@ public class ObjectSelector : MonoBehaviour
             }
         }
         
-        // 右键点击执行操作 - 使用 Input Manager
-        if (Input.GetMouseButtonDown(1) && selectedObject != null && moveController.canDelete) // 右键点击
-        {
-            ExecuteAction();
-        }
-        
         // 按H键直接执行操作 - 使用 Input Manager
         if (Input.GetKeyDown(KeyCode.H) && selectedObject != null && moveController.canDelete)
         {
-            ExecuteAction();
+            ExecuteImmediateDelete();
         }
         
         // 添加模式下，按H键也可以放置方块
@@ -183,6 +243,99 @@ public class ObjectSelector : MonoBehaviour
         {
             Debug.Log("请等待当前方块消失后再添加新方块");
             StartCoroutine(FlashOutlineColor(Color.yellow, 0.5f));
+        }
+    }
+    
+    // 更新预览显示
+    void UpdatePreview()
+    {
+        if (selectionMode && moveController != null && moveController.canAdd && previewObject != null)
+        {
+            // 更新预览位置
+            previewObject.transform.position = previewPosition;
+            
+            // 更新预览颜色
+            if (previewRenderer != null)
+            {
+                float distance = Vector3.Distance(transform.position, previewPosition);
+                bool isValid = distance <= maxDistance && !IsPositionOccupied(previewPosition);
+                
+                Color previewColor = isValid ? validPositionColor : invalidPositionColor;
+                previewRenderer.material.color = previewColor;
+                
+                // 添加透明度效果
+                Color semiTransparent = previewColor;
+                semiTransparent.a = 0.5f;
+                previewRenderer.material.color = semiTransparent;
+            }
+        }
+    }
+    
+    // 显示/隐藏预览
+    void ShowPreview(bool show)
+    {
+        if (previewObject != null)
+        {
+            previewObject.SetActive(show);
+        }
+    }
+    
+    // 延迟删除协程
+    IEnumerator DeleteAfterDelay()
+    {
+        if (selectedObject == null) yield break;
+        
+        // 显示倒计时效果
+        float timer = deleteDelay;
+        while (timer > 0 && selectedObject != null)
+        {
+            // 可以在这里添加视觉反馈，比如边框闪烁
+            float pulse = Mathf.PingPong(Time.time * 10f, 0.5f) + 0.5f;
+            Color pulseColor = Color.Lerp(deleteModeColor, Color.white, pulse);
+            outlineMatInstance.SetColor("_OutlineColor", pulseColor);
+            
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+        
+        // 恢复原始颜色
+        if (outlineMatInstance != null)
+        {
+            outlineMatInstance.SetColor("_OutlineColor", deleteModeColor);
+        }
+        
+        // 执行删除
+        if (selectedObject != null)
+        {
+            DeleteSelectedObject();
+        }
+        
+        deleteCoroutine = null;
+    }
+    
+    // 立即删除（H键触发）
+    void ExecuteImmediateDelete()
+    {
+        if (selectedObject != null && moveController != null && moveController.canDelete)
+        {
+            // 检查距离是否在允许范围内
+            float distance = Vector3.Distance(transform.position, selectedObject.transform.position);
+            if (distance > maxDistance)
+            {
+                Debug.Log($"物体距离太远 ({distance:F1} > {maxDistance})，无法删除");
+                StartCoroutine(FlashOutlineColor(Color.yellow, 0.5f));
+                return;
+            }
+            
+            // 停止删除协程
+            if (deleteCoroutine != null)
+            {
+                StopCoroutine(deleteCoroutine);
+                deleteCoroutine = null;
+            }
+            
+            // 删除模式 - 删除标签为 Stone 的物体
+            DeleteSelectedObject();
         }
     }
     
@@ -207,17 +360,14 @@ public class ObjectSelector : MonoBehaviour
             float distance = Vector3.Distance(transform.position, gridPosition);
             isPositionValid = distance <= maxDistance;
             
-            // 根据距离有效性选择颜色
-            Color previewColor = isPositionValid ? Color.green : Color.red;
-            
             // 在Scene视图中显示位置（调试用）
-            Debug.DrawRay(gridPosition, Vector3.up * 2, previewColor);
+            Debug.DrawRay(gridPosition, Vector3.up * 2, isPositionValid ? Color.green : Color.red);
             
             // 绘制网格线（调试用）
-            DrawGridLines(previewColor);
+            DrawGridLines(isPositionValid ? Color.green : Color.red);
             
             // 绘制距离指示线
-            Debug.DrawLine(transform.position, gridPosition, previewColor);
+            Debug.DrawLine(transform.position, gridPosition, isPositionValid ? Color.green : Color.red);
         }
     }
     
@@ -338,7 +488,7 @@ public class ObjectSelector : MonoBehaviour
         
         blockLifetimeCoroutine = null;
     }
-    
+
     void SpawnAirWalls(Vector3 centerPosition)
     {
         if (airWallPrefabX == null || airWallPrefabZ == null)
@@ -383,6 +533,7 @@ public class ObjectSelector : MonoBehaviour
         
     }
 
+    
     // 检查位置是否已被占用
     bool IsPositionOccupied(Vector3 position)
     {
@@ -467,6 +618,7 @@ public class ObjectSelector : MonoBehaviour
         
         float distance = Vector3.Distance(transform.position, selectedObject.transform.position);
         Debug.Log($"选中物体: {selectedObject.name} (Tag: {selectedObject.tag}, 距离: {distance:F1})");
+        Debug.Log($"物体将在 {deleteDelay} 秒后自动删除，按 H 键可立即删除");
     }
     
     void ClearSelection()
@@ -482,24 +634,6 @@ public class ObjectSelector : MonoBehaviour
             
             selectedObject = null;
             originalMaterial = null;
-        }
-    }
-    
-    void ExecuteAction()
-    {
-        if (selectedObject != null && moveController != null && moveController.canDelete)
-        {
-            // 检查距离是否在允许范围内
-            float distance = Vector3.Distance(transform.position, selectedObject.transform.position);
-            if (distance > maxDistance)
-            {
-                Debug.Log($"物体距离太远 ({distance:F1} > {maxDistance})，无法删除");
-                StartCoroutine(FlashOutlineColor(Color.yellow, 0.5f));
-                return;
-            }
-            
-            // 删除模式 - 删除标签为 Stone 的物体
-            DeleteSelectedObject();
         }
     }
     
@@ -540,6 +674,9 @@ public class ObjectSelector : MonoBehaviour
             
             // 给用户视觉反馈，改变边框颜色
             StartCoroutine(FlashOutlineColor(Color.yellow, 0.5f));
+            
+            // 清除选择
+            ClearSelection();
         }
     }
     
@@ -565,97 +702,13 @@ public class ObjectSelector : MonoBehaviour
             outlineMatInstance.SetColor("_OutlineColor", originalColor);
         }
     }
-    
-    void DisablePlayerMovement()
+ 
+    // 清理资源
+    void OnDestroy()
     {
-        // 禁用玩家移动组件
-        if (moveController != null)
+        if (previewObject != null)
         {
-            moveController.enabled = false;
-        }
-        
-        // 如果有角色控制器，也可以禁用它
-        var characterController = FindObjectOfType<CharacterController>();
-        if (characterController != null)
-        {
-            characterController.enabled = false;
-        }
-    }
-    
-    void EnablePlayerMovement()
-    {
-        // 启用玩家移动组件
-        if (moveController != null)
-        {
-            moveController.enabled = true;
-        }
-        
-        // 启用角色控制器
-        var characterController = FindObjectOfType<CharacterController>();
-        if (characterController != null)
-        {
-            characterController.enabled = true;
-        }
-    }
-    
-    // 在编辑器中显示选择状态
-    void OnGUI()
-    {
-        if (selectionMode && moveController != null)
-        {
-            if (moveController.canDelete)
-            {
-                GUI.Box(new Rect(10, 10, 300, 160), "删除模式");
-                GUI.Label(new Rect(20, 40, 280, 20), "左键点击: 选择物体");
-                GUI.Label(new Rect(20, 60, 280, 20), "右键点击: 删除物体");
-                GUI.Label(new Rect(20, 80, 280, 20), "H 键: 删除物体");
-                GUI.Label(new Rect(20, 100, 280, 20), "R 键: 退出模式");
-                GUI.Label(new Rect(20, 120, 280, 20), $"目标标签: {deletionTag}");
-                GUI.Label(new Rect(20, 140, 280, 20), $"最大距离: {maxDistance}");
-                
-                if (selectedObject != null)
-                {
-                    float distance = Vector3.Distance(transform.position, selectedObject.transform.position);
-                    bool isValidTarget = selectedObject.CompareTag(deletionTag) && distance <= maxDistance;
-                    string statusText = isValidTarget ? "可删除" : "不可删除";
-                    string distanceText = $"距离: {distance:F1}";
-                    
-                    GUI.Box(new Rect(10, 180, 300, 70), 
-                        $"已选择: {selectedObject.name}\n标签: {selectedObject.tag}\n{distanceText}\n({statusText})");
-                }
-            }
-            else if (moveController.canAdd)
-            {
-                GUI.Box(new Rect(10, 10, 300, 180), "添加模式");
-                GUI.Label(new Rect(20, 40, 280, 20), "左键点击: 放置方块");
-                GUI.Label(new Rect(20, 80, 280, 20), "R 键: 退出模式");
-                GUI.Label(new Rect(20, 100, 280, 20), "在网格位置生成方块");
-                GUI.Label(new Rect(20, 120, 280, 20), $"最大距离: {maxDistance}");
-                
-                // 显示添加状态
-                string addStatus = canAddNewBlock ? "可以添加" : "已有方块，等待消失";
-                Color statusColor = canAddNewBlock ? Color.green : Color.yellow;
-                GUI.Label(new Rect(20, 140, 280, 20), $"状态: {addStatus}");
-                
-                // 显示网格位置和距离
-                float distance = Vector3.Distance(transform.position, previewPosition);
-                string distanceStatus = distance <= maxDistance ? "有效" : "太远";
-                Color distanceColor = distance <= maxDistance ? Color.green : Color.red;
-                
-                GUI.Box(new Rect(10, 160, 300, 60), 
-                    $"网格位置: {previewPosition.x:F1}, {previewPosition.z:F1}\n距离: {distance:F1}\n状态: {distanceStatus}");
-                
-                // 显示网格坐标
-                int gridX = Mathf.RoundToInt((previewPosition.x + 1) / 2f);
-                int gridZ = Mathf.RoundToInt((previewPosition.z + 1) / 2f);
-                GUI.Box(new Rect(10, 230, 300, 30), $"网格坐标: ({gridX}, {gridZ})");
-                
-                // 如果当前有方块，显示倒计时
-                if (currentAddedBlock != null && blockLifetimeCoroutine != null)
-                {
-                    GUI.Box(new Rect(10, 270, 300, 30), $"方块将在玩家离开后 {blockLifetimeAfterExit} 秒消失");
-                }
-            }
+            Destroy(previewObject);
         }
     }
 }
