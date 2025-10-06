@@ -202,12 +202,14 @@ public class ObjectSelector : MonoBehaviour
                             StopCoroutine(deleteCoroutine);
                             deleteCoroutine = null;
                         }
-                        
+
                         // 设置新的选择
                         SelectObject(hitObject);
-                        
+
                         // 启动删除协程
                         deleteCoroutine = StartCoroutine(DeleteAfterDelay());
+
+                        AudioMng.Instance.PlaySound("puzzleCollect");
                     }
                     else
                     {
@@ -412,6 +414,8 @@ public class ObjectSelector : MonoBehaviour
             
             // 添加到已创建方块列表
             createdBlocks.Add(newBlock);
+
+            AudioMng.Instance.PlaySound("puzzleCollect");
             
             Debug.Log($"在网格位置 {previewPosition} 生成了方块 (距离: {distance:F1})");
             Debug.Log($"方块将在玩家经过并离开后 {blockLifetimeAfterExit} 秒消失");

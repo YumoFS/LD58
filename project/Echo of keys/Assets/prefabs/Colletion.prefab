@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2388485490129511937}
   - component: {fileID: 6971299525642156543}
   - component: {fileID: 5896049925288775588}
+  - component: {fileID: 4797374789544741495}
   m_Layer: 0
   m_Name: Colletion
   m_TagString: Untagged
@@ -69,6 +70,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelNum: 1
   illustration: {fileID: 0}
+--- !u!111 &4797374789544741495
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5748045102699868713}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 81a576a07d1c09a44b1c5619647722b7, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 81a576a07d1c09a44b1c5619647722b7, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1001 &5273221513976422285
 PrefabInstance:
   m_ObjectHideFlags: 0
