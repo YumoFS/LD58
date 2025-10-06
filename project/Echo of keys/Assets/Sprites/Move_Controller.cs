@@ -263,11 +263,13 @@ public class Move_Controller : MonoBehaviour
         {
             float speed = RunPressed ? RunSpeed : WalkSpeed;
 
-            Vector3 camForward = Camera.main.transform.forward;
+            //Vector3 camForward = Camera.main.transform.forward;
+            Vector3 camForward = new Vector3(0, 0, 1);
             camForward.y = 0;
             camForward.Normalize();
 
-            Vector3 camRight = Camera.main.transform.right;
+            //Vector3 camRight = Camera.main.transform.right;
+            Vector3 camRight = new Vector3(1, 0, 0);
             camRight.y = 0;
             camRight.Normalize();
 
@@ -535,11 +537,13 @@ public class Move_Controller : MonoBehaviour
         if (MovePressed)
         {
             // 获取摄像机方向
-            Vector3 camForward = Camera.main.transform.forward;
+            //Vector3 camForward = Camera.main.transform.forward;
+            Vector3 camForward = new Vector3(0, 0, 1);
             camForward.y = 0;
             camForward.Normalize();
 
-            Vector3 camRight = Camera.main.transform.right;
+            //Vector3 camRight = Camera.main.transform.right;
+            Vector3 camRight = new Vector3(1, 0, 0);
             camRight.y = 0;
             camRight.Normalize();
 
