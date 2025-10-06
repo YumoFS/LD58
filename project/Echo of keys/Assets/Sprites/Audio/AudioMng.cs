@@ -10,16 +10,20 @@ public class AudioMng : MonoBehaviour
     public AudioClip bgm2;
     public AudioSource audioSource;
     public AudioSource sfxSource;
-    private void Start()
+    void Awake()
     {
         Instance = this;
+    }
+    private void Start()
+    {
+        DontDestroyOnLoad(gameObject);
         footstep = Resources.Load<AudioClip>("footstep");
         footstep.LoadAudioData();
     }
     public void PlayMusic(string name, float volume = 1)
     {
         audioSource.volume = volume;
-        if (name == "Common")
+        if (name == "1")
         {
             audioSource.clip = bgm1;
             audioSource.Play();
