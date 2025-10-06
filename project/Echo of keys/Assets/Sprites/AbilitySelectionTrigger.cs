@@ -74,6 +74,14 @@ public class AbilitySelectionTrigger : MonoBehaviour
         BeginSelection(other.gameObject);
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (hideUIOnStart && !selectionInProgress && IsPlayer(other.gameObject))
+        {
+            abilityChoiceUI.HideInstantly();
+        }
+    }
+
     private void BeginSelection(GameObject playerObject)
     {
         Move_Controller controller = playerObject.GetComponent<Move_Controller>();
@@ -105,6 +113,11 @@ public class AbilitySelectionTrigger : MonoBehaviour
             triggerCollider.enabled = true;
             hasCompletedOnce = false;
         }
+
+        if (hideUIOnStart)
+        {
+            abilityChoiceUI.HideInstantly();
+        }
     }
 
     internal Move_Controller GetFallbackController()
@@ -119,6 +132,11 @@ public class AbilitySelectionTrigger : MonoBehaviour
         if (triggerCollider != null)
         {
             triggerCollider.enabled = true;
+        }
+
+        if (hideUIOnStart)
+        {
+            abilityChoiceUI.HideInstantly();
         }
     }
 
