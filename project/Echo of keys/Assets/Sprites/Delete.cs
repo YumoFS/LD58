@@ -55,7 +55,7 @@ public class ObjectSelector : MonoBehaviour
     void Update()
     {
         // 切换选择模式 - 使用 Input Manager
-        if (Input.GetKeyDown(KeyCode.Delete) && CanEnterSelectionMode())
+        if (Input.GetKeyDown(KeyCode.R) && CanEnterSelectionMode())
         {
             ToggleSelectionMode();
         }
