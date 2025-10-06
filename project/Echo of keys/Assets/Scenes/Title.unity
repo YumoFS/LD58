@@ -181,8 +181,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Exit
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: bf00283215380b74a876fdbca45066f8, type: 2}
+  m_sharedMaterial: {fileID: 7820074919801300466, guid: bf00283215380b74a876fdbca45066f8,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1070,7 +1071,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -281, y: -237.71}
+  m_AnchoredPosition: {x: -288, y: -214.72}
   m_SizeDelta: {x: 193.878, y: 41.718}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1101027203
@@ -1136,7 +1137,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1101027201}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1193,10 +1194,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas_HUD
       objectReference: {fileID: 0}
+    - target: {fileID: 4371640077088925322, guid: 0af21f4ee6493c54ea271bedde59c5f8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4546778814140166629, guid: 0af21f4ee6493c54ea271bedde59c5f8,
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -213
+      objectReference: {fileID: 0}
+    - target: {fileID: 5649694230641808716, guid: 0af21f4ee6493c54ea271bedde59c5f8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5787959358318541729, guid: 0af21f4ee6493c54ea271bedde59c5f8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6048440856854042780, guid: 0af21f4ee6493c54ea271bedde59c5f8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8157378610812495351, guid: 0af21f4ee6493c54ea271bedde59c5f8,
         type: 3}
@@ -1779,17 +1800,18 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Game Start
+  m_text: -Start-
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d6362c6523ab0d146965bc01d84b8c6d, type: 2}
+  m_sharedMaterial: {fileID: 1902927059733475593, guid: d6362c6523ab0d146965bc01d84b8c6d,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4293983664
-  m_fontColor: {r: 0.6905976, g: 0.99371064, b: 0.94099534, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1875,7 +1897,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1633847075
 RectTransform:
   m_ObjectHideFlags: 0
