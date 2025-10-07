@@ -1738,14 +1738,15 @@ MonoBehaviour:
     Press R to lauch
     skill 2
 
-    Press 1 to switch skill 1:
+    Press 1 to switch skill 1 when in check point:
 
-    -Teleport to nearby, or Recall the
-    position
+    -Teleport to
+    nearby, or Recall the position
 
-    Press 2 to switch skill 2:
+    Press 2 to switch skill 2 when in check point:
 
-    -Create or destroy objects by clicking
+    -Create
+    or destroy nearby objects by clicking on it
 
 '
   m_isRightToLeft: 0
@@ -1811,7 +1812,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 2.7344356, w: 0}
+  m_margin: {x: 0, y: 0, z: 87.75702, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
