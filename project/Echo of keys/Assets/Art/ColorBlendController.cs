@@ -3,23 +3,57 @@ public class ColorBlendController : MonoBehaviour
 {
     //一个材质切换程序，方便不同场景调色
     public Color[] setColor = new Color[5];
-   public float duration = 50.0f; // 变化持续时间
+   public float duration = 5.0f; // 变化持续时间
    private Color currentColor;
    private Color dstColor;
     private int currentLevel;
    private Renderer objectRenderer;
    private float timer;
    private bool isChanging = false;
+   private GameObject player;
     void Start()
     {
         objectRenderer = GetComponent<Renderer>();
         currentColor = setColor[0];
-       currentLevel = 0;
+        currentLevel = 0;
         timer = 0f;
+        player = GameObject.FindGameObjectWithTag("Player");
+   }
+    int getLevel(float zCoordinate)
+    {
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+        if (player == null)
+        {
+            return 0; // 如果仍然找不到玩家，返回默认等级0
+        }
+        if (zCoordinate < 45)
+        {
+            return 1;
+        }
+        else if (zCoordinate >= 45 && zCoordinate <= 98)
+        {
+            return 2;
+        }
+        else if (zCoordinate >= 98 && zCoordinate <= 148)
+        {
+            return 3;
+        }
+        else if (zCoordinate > 148)
+        {
+            return 4;
+        }
+        else
+        {
+            return 0;
+        }
    }
     void Update()
     {
-        int dstLevel = 2; //!!!从程序那边获取当前切换的关卡!!!
+        float currentZPosition = player.transform.position.z;
+        int dstLevel = getLevel(currentZPosition);
         timer += Time.deltaTime;
         if (dstLevel != currentLevel)
         {
