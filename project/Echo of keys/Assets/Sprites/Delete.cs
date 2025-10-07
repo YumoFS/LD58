@@ -32,6 +32,9 @@ public class ObjectSelector : MonoBehaviour
     [Header("Air Wall Settings")]
     public GameObject airWallPrefabX; // 空气墙预制体
     public GameObject airWallPrefabZ; // 空气墙预制体
+
+    [Header("Hint UI")]
+    public GameObject hintUI; // 提示UI
     
     private Move_Controller moveController;
     private bool selectionMode = false;
@@ -139,37 +142,51 @@ public class ObjectSelector : MonoBehaviour
     void ToggleSelectionMode()
     {
         selectionMode = !selectionMode;
-        
+
         if (selectionMode)
         {
             string modeName = moveController.canDelete ? "删除" : "添加";
             Debug.Log($"进入{modeName}模式");
-            
+
             // 更新边框颜色
             UpdateOutlineColor();
-            
+
             // 如果是添加模式，显示预览
             if (moveController.canAdd)
             {
                 ShowPreview(true);
             }
+
+            if (hintUI == null)
+                Debug.Log("请为ObjectSelector分配HintUI");
+            // 显示提示UI
+            if (hintUI != null)
+            {
+                hintUI.SetActive(true);
+            }
         }
         else
         {
             Debug.Log("退出选择模式");
-            
+
             // 清除选择
             ClearSelection();
-            
+
             // 停止删除协程
             if (deleteCoroutine != null)
             {
                 StopCoroutine(deleteCoroutine);
                 deleteCoroutine = null;
             }
-            
+
             // 隐藏预览
             ShowPreview(false);
+
+            // 隐藏提示UI
+            if (hintUI != null)
+            {
+                hintUI.SetActive(false);
+            }
         }
     }
     

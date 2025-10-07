@@ -9,6 +9,7 @@ TagManager:
   - Block
   - hiddenBlock
   - door
+  - instr_dstr
   layers:
   - Default
   - TransparentFX

@@ -3,7 +3,13 @@ guid: a98da49e6d13e454281e7efd9ca98c9b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - outlineMaterial: {instanceID: 0}
+  - createdBlockPrefab: {instanceID: 0}
+  - previewMaterial: {instanceID: 0}
+  - airWallPrefabX: {instanceID: 0}
+  - airWallPrefabZ: {instanceID: 0}
+  - hintUI: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
