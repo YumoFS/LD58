@@ -274,7 +274,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 69ff6b5b9e0ca604bb3a5e6007272f7a, type: 2}
+  - {fileID: 2100000, guid: f06e3846c781db54793b24758cbe40b3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -357,9 +357,9 @@ Transform:
   - {fileID: 5275016939047942184}
   - {fileID: 6769500148762271544}
   - {fileID: 4641364753540429456}
-  - {fileID: 4445444341112528652}
   - {fileID: 7273368826105695215}
   - {fileID: 5554808712325226296}
+  - {fileID: 2412512787799875959}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4856218045770091827
@@ -891,11 +891,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c6c93782a8409e4a9b76ebc0366aa52, type: 3}
---- !u!4 &4445444341112528652 stripped
+--- !u!4 &2412512787799875959 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3105218182522064317, guid: 7c6c93782a8409e4a9b76ebc0366aa52,
     type: 3}
-  m_PrefabInstance: {fileID: 1632158419501159089}
+  m_PrefabInstance: {fileID: 751262095167319242}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1932336507497285212
 PrefabInstance:

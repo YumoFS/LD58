@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5c98b41cd421f435d81a2373d7798707, type: 2}
+  - {fileID: 2100000, guid: 95ba3ab4b4fd1934b8c52e85ca5ce471, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -238,6 +238,9 @@ MonoBehaviour:
   directionToUnlock: right
   destroyAfterTrigger: 1
   visualEffect: {fileID: 0}
+  soundEffect: {fileID: 0}
+  levelNum: 1
+  illustration: {fileID: 0}
 --- !u!65 &5985424477755141212
 BoxCollider:
   m_ObjectHideFlags: 0

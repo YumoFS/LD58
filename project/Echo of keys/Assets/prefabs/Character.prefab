@@ -73,6 +73,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7823293702887809713, guid: 5d6efaf5e46cb4d2189307f1c8512121,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d5c296d431ba91a48b0caef34c1ed1d3, type: 2}
+    - target: {fileID: -4815152262335523322, guid: 5d6efaf5e46cb4d2189307f1c8512121,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d4e7c14175abb544cb2efddacd3d63ab, type: 2}
+    - target: {fileID: -4815152262335523322, guid: 5d6efaf5e46cb4d2189307f1c8512121,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b944c270ca56c4f418317e6846ca17f6, type: 2}
     - target: {fileID: 919132149155446097, guid: 5d6efaf5e46cb4d2189307f1c8512121,
         type: 3}
       propertyPath: m_Name
@@ -169,6 +184,7 @@ MonoBehaviour:
   recallCooldown: 2
   recallEffect: {fileID: 0}
   markEffect: {fileID: 0}
+  canSwitchAbilities: 0
 --- !u!143 &6208409775491645761
 CharacterController:
   m_ObjectHideFlags: 0
@@ -236,15 +252,21 @@ MonoBehaviour:
   addModeColor: {r: 0, g: 1, b: 0, a: 1}
   outlineWidth: 0.05
   maxDistance: 6
+  maxAddDistance: 3.5
   deletionTag: Stone
   createdBlockPrefab: {fileID: 3981776076672954296, guid: 57648f78ffc3e614fb6fcff37ec5d1f6,
     type: 3}
   ignoreTag: AirWall
   blockLifetimeAfterExit: 3
+  deleteDelay: 0.1
+  previewMaterial: {fileID: 0}
+  validPositionColor: {r: 0, g: 1, b: 0, a: 1}
+  invalidPositionColor: {r: 1, g: 0, b: 0, a: 1}
   airWallPrefabX: {fileID: 9004942752889133137, guid: 7c6c93782a8409e4a9b76ebc0366aa52,
     type: 3}
   airWallPrefabZ: {fileID: 11157853417393288, guid: 21ba0fc21bf0335419388e9934b29ea1,
     type: 3}
+  hintUI: {fileID: 0}
 --- !u!114 &4661412508682930374
 MonoBehaviour:
   m_ObjectHideFlags: 0
